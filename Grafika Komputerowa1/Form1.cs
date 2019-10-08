@@ -50,14 +50,14 @@ namespace Grafika_Komputerowa1
                     SolidBrush brush = new SolidBrush(Color.Black);
                     using (Graphics g = Graphics.FromImage(map))
                     {
-                        g.FillRectangle(brush, e.X, e.Y, CONST.pointSize, CONST.pointSize);
+                        g.FillRectangle(brush, e.X- CONST.pointHalf, e.Y- CONST.pointHalf, CONST.pointSize, CONST.pointSize);
                         points.Add((e.X, e.Y));
                     }
                     pictureBox1.Image = map;
                 }
                 else
                 {
-                    if(e.IsLastPoint(points))
+                    if(e.IsFirstPoint(points))
                     {
                         points.Add((e.X, e.Y));
                     }
@@ -88,6 +88,7 @@ namespace Grafika_Komputerowa1
         {
             x = e.X;
             y = e.Y;
+            //if(e.Button == Mouse)
             if(isOnPoint)
             {
                 points.MovePoint(setx, sety, x, y);

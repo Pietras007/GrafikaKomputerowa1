@@ -13,7 +13,7 @@ namespace Grafika_Komputerowa1
         {
             foreach(var p in points)
             {
-                if (e.X >= p.Item1 - 1 && e.X <= p.Item1 + 1 && e.Y >= p.Item2 - 1 && e.Y <= p.Item2 + 1)
+                if (e.X >= p.Item1 - CONST.pointHalf && e.X <= p.Item1 + CONST.pointHalf && e.Y >= p.Item2 - CONST.pointHalf && e.Y <= p.Item2 + CONST.pointHalf)
                 {
                     return true;
                 }
@@ -21,12 +21,12 @@ namespace Grafika_Komputerowa1
             return false;
         }
 
-        public static bool IsLastPoint(this MouseEventArgs e, List<(int, int)> points)
+        public static bool IsFirstPoint(this MouseEventArgs e, List<(int, int)> points)
         {
             if (points != null && points.Count > 0)
             {
-                var p = points.LastOrDefault();
-                if (e.X >= p.Item1 - 1 && e.X <= p.Item1 + 1 && e.Y >= p.Item2 - 1 && e.Y <= p.Item2 + 1)
+                var p = points.FirstOrDefault();
+                if (e.X >= p.Item1 - CONST.pointHalf && e.X <= p.Item1 + CONST.pointHalf && e.Y >= p.Item2 - CONST.pointHalf && e.Y <= p.Item2 + CONST.pointHalf)
                 {
                     return true;
                 }
@@ -39,7 +39,7 @@ namespace Grafika_Komputerowa1
             for(int i=0;i<list.Count;i++)
             {
                 var p = list[i];
-                if (x >= p.Item1 - 1 && x <= p.Item1 + 1 && y >= p.Item2 - 1 && y <= p.Item2 + 1)
+                if (x >= p.Item1 - CONST.pointHalf && x <= p.Item1 + CONST.pointHalf && y >= p.Item2 - CONST.pointHalf && y <= p.Item2 + CONST.pointHalf)
                 {
                     p.Item1 = ex;
                     p.Item2 = ey;
