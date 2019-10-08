@@ -34,17 +34,17 @@ namespace Grafika_Komputerowa1
             return false;
         }
 
-        public static void MovePoint(this List<Point> list, Point previous, Point current)
+        public static int GetPointIndex(this List<Point> list, Point point)
         {
-            for(int i=0;i<list.Count;i++)
+            for (int i = 0; i < list.Count; i++)
             {
                 var p = list[i];
-                if (previous.x >= p.x - CONST.pointHalf && previous.x <= p.x + CONST.pointHalf && previous.y >= p.y - CONST.pointHalf && previous.y <= p.y + CONST.pointHalf)
+                if (point.x >= p.x - CONST.pointHalf && point.x <= p.x + CONST.pointHalf && point.y >= p.y - CONST.pointHalf && point.y <= p.y + CONST.pointHalf)
                 {
-                    p.x = current.x;
-                    p.y = current.y;
+                    return i;
                 }
             }
+            return -1;
         }
     }
 }

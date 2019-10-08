@@ -13,22 +13,9 @@ namespace Grafika_Komputerowa1
     public partial class Form1 : Form
     {
         List<Point> points = new List<Point>();
-        Bitmap map;
-        Point clickedOn;
         public Form1()
         {
             InitializeComponent();
-            map = new Bitmap(CONST.bitmapX, CONST.bitmapY);
-            int width = map.Width;
-            int height = map.Height;
-            for (int i = 0; i < width; i++)
-            {
-                for (int j = 0; j < height; j++)
-                {
-                    map.SetPixel(i, j, Color.White);
-                }
-            }
-            pictureBox1.Image = map;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -41,12 +28,10 @@ namespace Grafika_Komputerowa1
             MouseEventArgs e = (MouseEventArgs)eventargs;
             if (e.Button == MouseButtons.Left)
             {
-                clickedOn = new Point(e.X, e.Y);
                 if (!e.IsPoint(points))
                 {
                     points.Add(new Point(e.X, e.Y));
                 }
-
             }
             pictureBox1.Invalidate();
         }
@@ -59,8 +44,7 @@ namespace Grafika_Komputerowa1
                 System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Hand;
                 if (e.Button == MouseButtons.Left)
                 {
-                    points.MovePoint(clickedOn, current);
-                    clickedOn = current;
+                    points[points.GetPointIndex(current)] = current;
                 }
             }
             else

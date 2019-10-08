@@ -10,7 +10,7 @@ namespace Grafika_Komputerowa1
 {
     public static class DrawLine
     {
-        public async static void BrezenhamAlgorithm(this Graphics g, Point start, Point end, Pen pen)
+        public static void BrezenhamAlgorithm(this Graphics g, Point start, Point end, Pen pen)
         {
             g.DrawLine(pen, start.x, start.y, end.x, end.y);
         }
