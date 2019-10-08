@@ -12,13 +12,9 @@ namespace Grafika_Komputerowa1
 {
     public partial class Form1 : Form
     {
-        List<(int, int)> points = new List<(int, int)>();
+        List<Point> points = new List<Point>();
         Bitmap map;
-        int x;
-        int y;
-        int setx;
-        int sety;
-        bool isOnPoint = false;
+        Point clickedOn;
         public Form1()
         {
             InitializeComponent();
@@ -45,60 +41,62 @@ namespace Grafika_Komputerowa1
             MouseEventArgs e = (MouseEventArgs)eventargs;
             if (e.Button == MouseButtons.Left)
             {
+                clickedOn = new Point(e.X, e.Y);
                 if (!e.IsPoint(points))
                 {
-                    SolidBrush brush = new SolidBrush(Color.Black);
-                    using (Graphics g = Graphics.FromImage(map))
-                    {
-                        g.FillRectangle(brush, e.X- CONST.pointHalf, e.Y- CONST.pointHalf, CONST.pointSize, CONST.pointSize);
-                        points.Add((e.X, e.Y));
-                    }
-                    pictureBox1.Image = map;
+                    points.Add(new Point(e.X, e.Y));
                 }
-                else
-                {
-                    if(e.IsFirstPoint(points))
-                    {
-                        points.Add((e.X, e.Y));
-                    }
-                    else
-                    {
-                        isOnPoint = true;
-                        setx = e.X;
-                        sety = e.Y;
-                    }
-                }
-            }
-            Paint();
-        }
 
-        private void Paint()
-        {
-            if (points.Count > 1)
-            {
-                for (int i = 0; i + 1 < points.Count; i++)
-                {
-                    DrawLine draw = new DrawLine(map);
-                    pictureBox1.Image = draw.BrezenhamAlgorithm(points[i].Item1, points[i].Item2, points[i + 1].Item1, points[i + 1].Item2);
-                }
             }
+            pictureBox1.Invalidate();
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            x = e.X;
-            y = e.Y;
-            //if(e.Button == Mouse)
-            if(isOnPoint)
+            Point current = new Point(e.X, e.Y);
+            if (e.IsPoint(points))
             {
-                points.MovePoint(setx, sety, x, y);
+                System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Hand;
+                if (e.Button == MouseButtons.Left)
+                {
+                    points.MovePoint(clickedOn, current);
+                    clickedOn = current;
+                }
             }
-            Paint();
+            else
+            {
+                System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+            }
+            pictureBox1.Invalidate();
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
-            isOnPoint = false;
+            //isOnPoint = false;
+        }
+
+        private void pictureBox1_Paint_1(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+
+            SolidBrush whiteBrush = new SolidBrush(Color.White);
+            SolidBrush blackBrush = new SolidBrush(Color.Black);
+            Pen pen = new Pen(Color.Black);
+            g.FillRectangle(whiteBrush, 0, 0, CONST.bitmapX, CONST.bitmapY);
+
+            foreach (var p in points)
+            {
+                g.FillRectangle(blackBrush, p.x - CONST.pointHalf, p.y - CONST.pointHalf, CONST.pointSize, CONST.pointSize);
+            }
+
+            if (points.Count > 1)
+            {
+                for (int i = 0; i + 1 < points.Count; i++)
+                {
+                    g.BrezenhamAlgorithm(points[i], points[i + 1], pen);
+                }
+            }
+
         }
     }
 }

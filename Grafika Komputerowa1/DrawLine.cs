@@ -8,21 +8,11 @@ using System.Windows.Forms;
 
 namespace Grafika_Komputerowa1
 {
-    public class DrawLine
+    public static class DrawLine
     {
-        Bitmap map;
-        public DrawLine(Bitmap map)
+        public async static void BrezenhamAlgorithm(this Graphics g, Point start, Point end, Pen pen)
         {
-            this.map = map;
-        }
-        public Bitmap BrezenhamAlgorithm(int x, int y, int ex, int ey)
-        {
-            Pen pen = new Pen(Color.Black);
-            using (Graphics g = Graphics.FromImage(map))
-            {
-                g.DrawLine(pen, x, y, ex, ey);
-            }
-            return map;
+            g.DrawLine(pen, start.x, start.y, end.x, end.y);
         }
     }
 }
