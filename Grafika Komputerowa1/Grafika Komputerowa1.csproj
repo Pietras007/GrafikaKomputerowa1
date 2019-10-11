@@ -49,13 +49,13 @@
     <Compile Include="Constans\CONST.cs" />
     <Compile Include="Constans\Enums.cs" />
     <Compile Include="Draw\Brezenham.cs" />
+    <Compile Include="Extentions\MouseEventArgsExtentions.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helpers.cs" />
     <Compile Include="Models\CollectionFigure.cs" />
     <Compile Include="Models\Edge.cs" />
     <Compile Include="Models\Figure.cs" />
