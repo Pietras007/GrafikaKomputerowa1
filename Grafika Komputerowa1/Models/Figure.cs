@@ -190,5 +190,16 @@ namespace Grafika_Komputerowa1.Models
                 MoveEdge(e, X, Y);
             }
         }
+
+        public void AddPointOnEdge(Edge e)
+        {
+            Vertice start = e.Start;
+            Vertice end = e.End;
+            Vertice middle = new Vertice((start.x + end.x) / 2, (start.y + end.y) / 2);
+            points.Add(middle);
+            edges.Remove(e);
+            edges.Add(new Edge(start, middle));
+            edges.Add(new Edge(middle, end));
+        }
     }
 }
