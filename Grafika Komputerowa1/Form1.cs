@@ -19,6 +19,10 @@ namespace Grafika_Komputerowa1
         public ToolStripChoice stripChoice;
         public CollectionFigure collection;
         public Vertice clickedPoint;
+        public Edge clickedEdge;
+        public Figure clickedFigure;
+        public Vertice clickedPointOnEdge;
+        public Vertice clickedPointOnFigure;
         public bool isMoving;
         public Form1()
         {
@@ -43,13 +47,23 @@ namespace Grafika_Komputerowa1
                     Figure fig = collection.GetExtendingFigure();
                     fig.AddPoint(new Vertice(e.X, e.Y));
                 }
-                
             }
-           // pictureBox1.Invalidate();
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+            if(stripChoice == ToolStripChoice.DrawFigure)
+            {
+                if (e.IsStartPoint(collection))
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Hand;
+                }
+                else
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+                }
+            }
+
             if(stripChoice == ToolStripChoice.MoveVertice)
             {
                 if(isMoving)
@@ -68,6 +82,51 @@ namespace Grafika_Komputerowa1
                 else
                 {
                     System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+                }
+            }
+
+            if(stripChoice == ToolStripChoice.MoveEdge)
+            {
+                Edge edge = collection.GetEdgeFromPoint(new Vertice(e.X, e.Y));
+                if (edge != null)
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Hand;
+                }
+                else
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+                }
+
+                if(isMoving && clickedEdge != null)
+                {
+                    Figure figure = collection.GetFigure(clickedEdge);
+                    int X = e.X - clickedPointOnEdge.x;
+                    int Y = e.Y - clickedPointOnEdge.y;
+                    clickedPointOnEdge.x = e.X;
+                    clickedPointOnEdge.y = e.Y;
+                    figure.MoveEdge(clickedEdge, X, Y);
+                }
+            }
+
+            if(stripChoice == ToolStripChoice.MoveFigure)
+            {
+                Figure figure = collection.GetFigureFromClickOnBorder(new Vertice(e.X, e.Y));
+                if (figure != null)
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Cross;
+                }
+                else
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+                }
+
+                if (isMoving && clickedFigure != null)
+                {
+                    int X = e.X - clickedPointOnFigure.x;
+                    int Y = e.Y - clickedPointOnFigure.y;
+                    clickedPointOnFigure.x = e.X;
+                    clickedPointOnFigure.y = e.Y;
+                    clickedFigure.MoveFigure(X, Y);
                 }
             }
         }
@@ -108,6 +167,28 @@ namespace Grafika_Komputerowa1
                 if (p != null)
                 {
                     clickedPoint = p;
+                    isMoving = true;
+                }
+            }
+
+            if (stripChoice == ToolStripChoice.MoveEdge)
+            {
+                Edge edge = collection.GetEdgeFromPoint(new Vertice(e.X, e.Y));
+                if (edge != null)
+                {
+                    clickedEdge = edge;
+                    clickedPointOnEdge = new Vertice(e.X, e.Y);
+                    isMoving = true;
+                }
+            }
+
+            if (stripChoice == ToolStripChoice.MoveFigure)
+            {
+                Figure figure = collection.GetFigureFromClickOnBorder(new Vertice(e.X, e.Y));
+                if(figure != null)
+                {
+                    clickedFigure = figure;
+                    clickedPointOnFigure = new Vertice(e.X, e.Y);
                     isMoving = true;
                 }
             }

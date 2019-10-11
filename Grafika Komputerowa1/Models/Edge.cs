@@ -17,5 +17,19 @@ namespace Grafika_Komputerowa1.Models
             Start = x;
             End = y;
         }
+
+        public bool ContainsPoint(Vertice point)
+        {
+            int A = Start.y - End.y;
+            int B = End.x - Start.x;
+            int C = Start.y * (Start.x - End.x) + Start.x * (End.y - Start.y);
+            double distance = (double)Math.Abs(A * point.x + B * point.y + C) / Math.Sqrt(A*A + B*B);
+            if(distance < CONST.pointHalf)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

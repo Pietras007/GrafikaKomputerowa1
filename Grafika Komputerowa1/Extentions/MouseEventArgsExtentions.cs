@@ -23,5 +23,18 @@ namespace Grafika_Komputerowa1.Extentions
             }
             return false;
         }
+
+        public static bool IsStartPoint(this MouseEventArgs mouseEventArgs, CollectionFigure collection)
+        {
+            Vertice p = new Vertice(mouseEventArgs.X, mouseEventArgs.Y);
+            foreach (var fig in collection.figures)
+            {
+                if (fig.IsStartPoint(p))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

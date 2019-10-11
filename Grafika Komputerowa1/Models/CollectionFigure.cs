@@ -29,9 +29,19 @@ namespace Grafika_Komputerowa1.Models
             return null;
         }
 
-        public Edge GetEdge(Vertice point)
+        public Edge GetEdgeFromPoint(Vertice point)
         {
-            return new Edge(new Vertice(0,0), new Vertice(0,0));
+            foreach(var fig in figures)
+            {
+                foreach(var e in fig.edges)
+                {
+                    if(e.ContainsPoint(point))
+                    {
+                        return e;
+                    }
+                }
+            }
+            return null;
         }
 
         public Figure GetExtendingFigure()
@@ -64,6 +74,22 @@ namespace Grafika_Komputerowa1.Models
             return figure;
         }
 
+        public Figure GetFigureFromClickOnBorder(Vertice point)
+        {
+            var figurePoint = GetFigure(point);
+            var edge = GetEdgeFromPoint(point);
+            var figureEdge = GetFigure(edge);
+            if(figurePoint != null)
+            {
+                return figurePoint;
+            }
+            else if(figureEdge != null)
+            {
+                return figureEdge;
+            }
+            return null;
+        }
+
         public Figure GetFigure(Vertice point)
         {
             foreach(var fig in figures)
@@ -80,7 +106,10 @@ namespace Grafika_Komputerowa1.Models
         {
             foreach (var fig in figures)
             {
-                
+                if(fig.edges.Contains(edge))
+                {
+                    return fig;
+                }
             }
             return null;
         }

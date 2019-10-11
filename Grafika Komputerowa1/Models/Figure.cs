@@ -117,12 +117,12 @@ namespace Grafika_Komputerowa1.Models
             return false;
         }
 
-        public bool MoveEdge(Edge start, Edge end)
+        public bool MoveEdge(Edge edge, int X, int Y)
         {
-            if (start != null && end != null)
+            if (edge != null)
             {
-                MovePoint(start.Start, end.Start);
-                MovePoint(start.End, end.End);
+                MovePoint(edge.Start, new Vertice(edge.Start.x + X, edge.Start.y + Y));
+                MovePoint(edge.End, new Vertice(edge.End.x + X, edge.End.y + Y));
                 return true;
             }
             return false;
@@ -181,6 +181,14 @@ namespace Grafika_Komputerowa1.Models
                 }
             }
             return null;
+        }
+
+        public void MoveFigure(int X, int Y)
+        {
+            foreach(var e in edges)
+            {
+                MoveEdge(e, X, Y);
+            }
         }
     }
 }
