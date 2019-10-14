@@ -21,6 +21,11 @@ namespace Grafika_Komputerowa1.Models
             ps = new List<(Edge, Edge, Relation)>();
         }
 
+        public void KeepRelations()
+        {
+
+        }
+
         //POINTS
         public bool AddPoint(Vertice point)
         {
@@ -131,7 +136,6 @@ namespace Grafika_Komputerowa1.Models
         }
 
         //HELPERS
-
         public bool AddRelation(Edge a, Edge b, Relation relation)
         {
             if(a.relation == Relation.None && b.relation == Relation.None)

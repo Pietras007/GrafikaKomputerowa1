@@ -61,6 +61,7 @@
     <Compile Include="Models\CollectionFigure.cs" />
     <Compile Include="Models\Edge.cs" />
     <Compile Include="Models\Figure.cs" />
+    <Compile Include="Models\TODO.cs" />
     <Compile Include="Models\Vertice.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
