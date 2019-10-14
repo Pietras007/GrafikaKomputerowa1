@@ -12,10 +12,15 @@ namespace Grafika_Komputerowa1.Models
         public Relation relation { get; set; }
         public Vertice Start { get; set; }
         public Vertice End { get; set; }
+        public bool isSelected { get; set; }
+        public int relationNumber { get; set; }
         public Edge(Vertice x, Vertice y)
         {
             Start = x;
             End = y;
+            relation = Relation.None;
+            isSelected = false;
+            relationNumber = -1;
         }
 
         public bool ContainsPoint(Vertice point)
@@ -30,6 +35,11 @@ namespace Grafika_Komputerowa1.Models
             }
 
             return false;
+        }
+
+        public void SetSelected()
+        {
+            isSelected = true;
         }
     }
 }

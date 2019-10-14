@@ -16,6 +16,5 @@ namespace Grafika_Komputerowa1.Models
             x = _x;
             y = _y;
         }
-
     }
 }

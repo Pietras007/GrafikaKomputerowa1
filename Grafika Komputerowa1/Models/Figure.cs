@@ -21,21 +21,10 @@ namespace Grafika_Komputerowa1.Models
             ps = new List<(Edge, Edge, Relation)>();
         }
 
-        public bool AddRelation(Edge a, Edge b, Relation relation)
-        {
-            if(a.relation == Relation.None && b.relation == Relation.None)
-            {
-                ps.Add((a, b, relation));
-                a.relation = relation;
-                b.relation = relation;
-                return true;
-            }
-            return false;
-        }
-
+        //POINTS
         public bool AddPoint(Vertice point)
         {
-            if(!isFull)
+            if (!isFull)
             {
                 if (points.Count > 0)
                 {
@@ -44,7 +33,7 @@ namespace Grafika_Komputerowa1.Models
                         AddEdge(new Edge(points.LastOrDefault(), points.FirstOrDefault()));
                         isFull = true;
                     }
-                    else if(IsPoint(point))
+                    else if (IsPoint(point))
                     {
                         return false;
                     }
@@ -58,12 +47,11 @@ namespace Grafika_Komputerowa1.Models
                 {
                     points.Add(point);
                 }
-                
+
                 return true;
             }
             return false;
         }
-
         public bool MovePoint(Vertice start, Vertice end)
         {
             if (start != null && end != null)
@@ -85,28 +73,33 @@ namespace Grafika_Komputerowa1.Models
             }
             return false;
         }
-
-
         public bool RemovePoint(Vertice point)
         {
-            if(points.Count > 3)
+            if (points.Count > 3)
             {
+                Vertice a = null;
+                Vertice b = null;
                 (Edge, Edge) associatedEdges = GetEdgesFromPoint(point);
-                if(associatedEdges.Item1 != null)
+                if (associatedEdges.Item1 != null)
                 {
+                    a = associatedEdges.Item1.Start;
                     RemoveEdge(associatedEdges.Item1);
                 }
 
                 if (associatedEdges.Item2 != null)
                 {
+                    b = associatedEdges.Item2.End;
                     RemoveEdge(associatedEdges.Item2);
                 }
-                RemovePoint(point);
+                points.Remove(point);
+                AddEdge(new Edge(a, b));
                 return true;
             }
             return false;
         }
 
+
+        //EDGES
         public bool AddEdge(Edge edge)
         {
             if (edge != null)
@@ -116,7 +109,6 @@ namespace Grafika_Komputerowa1.Models
             }
             return false;
         }
-
         public bool MoveEdge(Edge edge, int X, int Y)
         {
             if (edge != null)
@@ -128,7 +120,6 @@ namespace Grafika_Komputerowa1.Models
             return false;
 
         }
-
         public bool RemoveEdge(Edge edge)
         {
             if (edge != null)
@@ -139,13 +130,28 @@ namespace Grafika_Komputerowa1.Models
             return false;
         }
 
+        //HELPERS
+
+        public bool AddRelation(Edge a, Edge b, Relation relation)
+        {
+            if(a.relation == Relation.None && b.relation == Relation.None)
+            {
+                int relationNumber = ps.Count + 1;
+                ps.Add((a, b, relation));
+                a.relation = relation;
+                a.relationNumber = relationNumber;
+                b.relation = relation;
+                b.relationNumber = relationNumber;
+                return true;
+            }
+            return false;
+        }
         public (Edge, Edge) GetEdgesFromPoint(Vertice point)
         {
             Edge a = edges.FirstOrDefault(e => e.End.Equals(point));
             Edge b = edges.FirstOrDefault(e => e.Start.Equals(point));
             return (a, b);
-        }
-        
+        } //If you click edge end
         public bool IsStartPoint(Vertice point)
         {
             Vertice po = GetPoint(point);
@@ -157,9 +163,8 @@ namespace Grafika_Komputerowa1.Models
                 }
             }
             return false;
-        }
-
-        public bool IsPoint(Vertice point)
+        }//Check if it is start point on figure
+        public bool IsPoint(Vertice point)//Check if you click on point
         {
             foreach(var p in points)
             {
@@ -170,7 +175,6 @@ namespace Grafika_Komputerowa1.Models
             }
             return false;
         }
-
         public Vertice GetPoint(Vertice point)
         {
             foreach(var p in points)
@@ -181,16 +185,14 @@ namespace Grafika_Komputerowa1.Models
                 }
             }
             return null;
-        }
-
+        }//If you click on point gives reference to point
         public void MoveFigure(int X, int Y)
         {
             foreach(var e in edges)
             {
                 MoveEdge(e, X, Y);
             }
-        }
-
+        }//Addes X and Y to all points
         public void AddPointOnEdge(Edge e)
         {
             Vertice start = e.Start;
@@ -200,6 +202,10 @@ namespace Grafika_Komputerowa1.Models
             edges.Remove(e);
             edges.Add(new Edge(start, middle));
             edges.Add(new Edge(middle, end));
+        }
+        public Edge GetSelectedEdge()
+        {
+            return edges.FirstOrDefault(e => e.isSelected == true);
         }
     }
 }

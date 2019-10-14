@@ -47,6 +47,52 @@ namespace Grafika_Komputerowa1
                     Figure fig = collection.GetExtendingFigure();
                     fig.AddPoint(new Vertice(e.X, e.Y));
                 }
+
+                if (stripChoice == ToolStripChoice.AddPoint)
+                {
+                    Edge edge = collection.GetEdgeFromPoint(new Vertice(e.X, e.Y));
+                    if (edge != null)
+                    {
+                        Figure fig = collection.GetFigure(edge);
+                        fig.AddPointOnEdge(edge);
+                    }
+                }
+
+                if (stripChoice == ToolStripChoice.RemovePoint)
+                {
+                    Vertice point = collection.GetPoint(new Vertice(e.X, e.Y));
+                    if (point != null)
+                    {
+                        Figure fig = collection.GetFigure(point);
+                        fig.RemovePoint(point);
+                    }
+                }
+
+                if(stripChoice == ToolStripChoice.AddRelation)
+                {
+                    Edge edge = collection.GetEdgeFromPoint(new Vertice(e.X, e.Y));
+                    if (edge != null)
+                    {
+                        Figure fig = collection.GetFigure(edge);
+                        Edge edge1 = fig.GetSelectedEdge();
+                        if (edge1 != null)
+                        {
+                            var formPopup = new RelationPopup();
+                            formPopup.ShowDialog(this);
+                            Relation relation = formPopup.GetChoosenRelation();
+                            if (relation != Relation.None)
+                            {
+                                fig.AddRelation(edge, edge1, relation);
+                                collection.RemoveSelection();
+                            }
+                        }
+                        else
+                        {
+                            collection.RemoveSelection();
+                            edge.SetSelected();
+                        }
+                    }
+                }
             }
         }
 
@@ -129,6 +175,44 @@ namespace Grafika_Komputerowa1
                     clickedFigure.MoveFigure(X, Y);
                 }
             }
+
+            if(stripChoice == ToolStripChoice.AddPoint)
+            {
+                Edge edge = collection.GetEdgeFromPoint(new Vertice(e.X, e.Y));
+                if (edge != null)
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Hand;
+                }
+                else
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+                }
+            }
+
+            if(stripChoice == ToolStripChoice.RemovePoint)
+            {
+                if (e.IsPoint(collection))
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Hand;
+                }
+                else
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+                }
+            }
+
+            if(stripChoice == ToolStripChoice.AddRelation)
+            {
+                Edge edge = collection.GetEdgeFromPoint(new Vertice(e.X, e.Y));
+                if (edge != null)
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Hand;
+                }
+                else
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+                }
+            }
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
@@ -142,18 +226,38 @@ namespace Grafika_Komputerowa1
 
             SolidBrush whiteBrush = new SolidBrush(Color.White);
             SolidBrush blackBrush = new SolidBrush(Color.Black);
+            SolidBrush orangeBrush = new SolidBrush(Color.Orange);
             Pen pen = new Pen(Color.Black);
+            Pen orangePen = new Pen(Color.Orange);
+            Font font = new Font("Verdana", 8);
             g.FillRectangle(whiteBrush, 0, 0, CONST.bitmapX, CONST.bitmapY);
 
             foreach (var fig in collection.figures)
             {
+                foreach (var edge in fig.edges)
+                {
+                    if(edge.relation == Relation.Equal)
+                    {
+                        g.PaintEqualIcon(edge, blackBrush, orangeBrush, font);
+                    }
+                    else if (edge.relation == Relation.Perpendicular)
+                    {
+                        g.PaintPerpendicularIcon(edge, blackBrush, orangeBrush, font);
+                    }
+
+                    if (edge.isSelected)
+                    {
+                        g.BrezenhamAlgorithm(edge.Start, edge.End, orangePen);
+                    }
+                    else
+                    {
+                        g.BrezenhamAlgorithm(edge.Start, edge.End, pen);
+                    }
+                }
+
                 foreach (var p in fig.points)
                 {
                     g.FillRectangle(blackBrush, p.x - CONST.pointHalf, p.y - CONST.pointHalf, CONST.pointSize, CONST.pointSize);
-                }
-                foreach (var edge in fig.edges)
-                {
-                    g.BrezenhamAlgorithm(edge.Start, edge.End, pen);
                 }
             }
             pictureBox1.Invalidate();
@@ -197,47 +301,55 @@ namespace Grafika_Komputerowa1
         private void toolStripLabel1_Click(object sender, EventArgs e)
         {
             stripChoice = ToolStripChoice.DrawFigure;
+            collection.RemoveSelection();
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             stripChoice = ToolStripChoice.DrawFigure;
+            collection.RemoveSelection();
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.MoveVertice;
+            collection.RemoveSelection();
         }
 
         private void toolStripLabel2_Click(object sender, EventArgs e)
         {
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.MoveVertice;
+            collection.RemoveSelection();
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.MoveEdge;
+            collection.RemoveSelection();
         }
 
         private void toolStripLabel3_Click(object sender, EventArgs e)
         {
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.MoveEdge;
+            collection.RemoveSelection();
         }
 
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.MoveFigure;
+            collection.RemoveSelection();
         }
 
         private void toolStripLabel4_Click(object sender, EventArgs e)
         {
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.MoveFigure;
+            collection.RemoveSelection();
         }
 
         private void toolStripButton5_Click(object sender, EventArgs e)
@@ -256,24 +368,28 @@ namespace Grafika_Komputerowa1
         {
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.AddPoint;
+            collection.RemoveSelection();
         }
 
         private void toolStripLabel6_Click(object sender, EventArgs e)
         {
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.AddPoint;
+            collection.RemoveSelection();
         }
 
         private void toolStripButton7_Click(object sender, EventArgs e)
         {
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.RemovePoint;
+            collection.RemoveSelection();
         }
 
         private void toolStripLabel7_Click(object sender, EventArgs e)
         {
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.RemovePoint;
+            collection.RemoveSelection();
         }
     }
 }

@@ -13,7 +13,6 @@ namespace Grafika_Komputerowa1.Models
         {
             figures = new List<Figure>();
         }
-
         public Vertice GetPoint(Vertice point)
         {
             foreach(var fig in figures)
@@ -28,7 +27,6 @@ namespace Grafika_Komputerowa1.Models
             }
             return null;
         }
-
         public Edge GetEdgeFromPoint(Vertice point)
         {
             foreach(var fig in figures)
@@ -43,7 +41,6 @@ namespace Grafika_Komputerowa1.Models
             }
             return null;
         }
-
         public Figure GetExtendingFigure()
         {
             Figure fig = figures.FirstOrDefault(x => x.isFull == false);
@@ -52,8 +49,7 @@ namespace Grafika_Komputerowa1.Models
                 return fig;
             }
             return GetNewFigure();
-        }
-
+        }//Gives reference to figure which is currenty not closed
         public bool DeleteUnfinishedFigure()
         {
             foreach(var fig in figures)
@@ -65,15 +61,13 @@ namespace Grafika_Komputerowa1.Models
                 }
             }
             return false;
-        }
-
+        }//Delete unifinished figure
         public Figure GetNewFigure()
         {
             Figure figure = new Figure();
             figures.Add(figure);
             return figure;
-        }
-
+        }//Creates new figure
         public Figure GetFigureFromClickOnBorder(Vertice point)
         {
             var figurePoint = GetFigure(point);
@@ -89,7 +83,6 @@ namespace Grafika_Komputerowa1.Models
             }
             return null;
         }
-
         public Figure GetFigure(Vertice point)
         {
             foreach(var fig in figures)
@@ -101,7 +94,6 @@ namespace Grafika_Komputerowa1.Models
             }
             return null;
         }
-
         public Figure GetFigure(Edge edge)
         {
             foreach (var fig in figures)
@@ -113,5 +105,15 @@ namespace Grafika_Komputerowa1.Models
             }
             return null;
         }
+        public void RemoveSelection()
+        {
+            foreach(var fig in figures)
+            {
+                foreach(var e in fig.edges)
+                {
+                    e.isSelected = false;
+                }
+            }
+        }//Remove selection on all edges
     }
 }
