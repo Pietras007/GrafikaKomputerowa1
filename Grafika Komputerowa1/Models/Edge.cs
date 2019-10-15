@@ -31,7 +31,15 @@ namespace Grafika_Komputerowa1.Models
             double distance = (double)Math.Abs(A * point.x + B * point.y + C) / Math.Sqrt(A*A + B*B);
             if(distance < CONST.pointHalf)
             {
-                return true;
+                double xy = Math.Abs(Math.Sqrt(Math.Pow(End.x - Start.x, 2) + Math.Pow(End.y - Start.y, 2)));
+                double xp = Math.Abs(Math.Sqrt(Math.Pow(End.x - point.x, 2) + Math.Pow(End.y - point.y, 2)));
+                double py = Math.Abs(Math.Sqrt(Math.Pow(point.x - Start.x, 2) + Math.Pow(point.y - Start.y, 2)));
+                double cosA = (Math.Pow(xy, 2) + Math.Pow(xp, 1) - Math.Pow(py, 2)) / (2 * xy * xp);
+                double cosB = (Math.Pow(xy, 2) + Math.Pow(py, 1) - Math.Pow(xp, 2)) / (2 * xy * py);
+                if (cosA > 0 && cosA < 1 && cosB > 0 && cosB < 1)
+                {
+                    return true;
+                }
             }
 
             return false;

@@ -13,12 +13,14 @@ namespace Grafika_Komputerowa1.Models
         public List<Vertice> points { get; set; }
         public List<Edge> edges { get; set; }
         public List<(Edge, Edge, Relation)> ps { get; set; }
+        public int relationNumber { get; set; }
         public Figure()
         {
             isFull = false;
             points = new List<Vertice>();
             edges = new List<Edge>();
             ps = new List<(Edge, Edge, Relation)>();
+            relationNumber = 0;
         }
 
         public void KeepRelations()
@@ -140,7 +142,7 @@ namespace Grafika_Komputerowa1.Models
         {
             if(a.relation == Relation.None && b.relation == Relation.None)
             {
-                int relationNumber = ps.Count + 1;
+                relationNumber++;
                 ps.Add((a, b, relation));
                 a.relation = relation;
                 a.relationNumber = relationNumber;
@@ -203,6 +205,13 @@ namespace Grafika_Komputerowa1.Models
             Vertice end = e.End;
             Vertice middle = new Vertice((start.x + end.x) / 2, (start.y + end.y) / 2);
             points.Add(middle);
+            if(e.relation != Relation.None)
+            {
+                (Edge, Edge, Relation) ps1 = ps.FirstOrDefault(x => x.Item1.Equals(e) || x.Item2.Equals(e));
+                ps1.Item1.relation = Relation.None;
+                ps1.Item2.relation = Relation.None;
+                ps.Remove(ps1);
+            }
             edges.Remove(e);
             edges.Add(new Edge(start, middle));
             edges.Add(new Edge(middle, end));
