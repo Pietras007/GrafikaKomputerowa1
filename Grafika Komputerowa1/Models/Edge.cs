@@ -45,6 +45,14 @@ namespace Grafika_Komputerowa1.Models
             return false;
         }
 
+        public double DistanceFrom(Vertice point)
+        {
+            int A = Start.y - End.y;
+            int B = End.x - Start.x;
+            int C = Start.y * (Start.x - End.x) + Start.x * (End.y - Start.y);
+            return Math.Abs(A * point.x + B * point.y + C) / Math.Sqrt(A * A + B * B);
+        }
+
         public void SetSelected()
         {
             isSelected = true;

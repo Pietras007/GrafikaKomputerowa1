@@ -23,10 +23,7 @@ namespace Grafika_Komputerowa1.Models
             relationNumber = 0;
         }
 
-        public void KeepRelations()
-        {
-
-        }
+       
 
         //POINTS
         public bool AddPoint(Vertice point)
@@ -136,19 +133,86 @@ namespace Grafika_Komputerowa1.Models
             }
             return false;
         }
+        public bool SetEdgesEqual(Edge e1, Edge e2, Vertice v)
+        {
+            double length1 = Math.Sqrt(Math.Pow(e1.Start.x - e1.End.x, 2) + Math.Pow(e1.Start.y - e1.End.y, 2));
+            double length2 = Math.Sqrt(Math.Pow(e2.Start.x - e2.End.x, 2) + Math.Pow(e2.Start.y - e2.End.y, 2));
+            Edge firstStart = GetEdgesFromPoint(e1.Start).Item1;
+            Edge firstEnd = GetEdgesFromPoint(e1.End).Item2;
+            Edge secondStart = GetEdgesFromPoint(e2.Start).Item1;
+            Edge secondEnd = GetEdgesFromPoint(e2.End).Item2;
+            if(secondStart.DistanceFrom(e2.End) <= length1 && !v.Equals(e2.End))
+            {
+                SetVerticesOnEdges(e2.End, length1);
+                return true;
+            }
+            else if(secondEnd.DistanceFrom(e2.Start) <= length1 && !v.Equals(e2.End))
+            {
+                SetVerticesOnEdges(e2.Start, length1);
+                return true;
+            }
+            else if(firstStart.DistanceFrom(e1.End) <= length2 && !v.Equals(e2.End))
+            {
+                SetVerticesOnEdges(e1.End, length2);
+                return true;
+            }
+            else if(firstEnd.DistanceFrom(e1.Start) <= length2 && !v.Equals(e2.End))
+            {
+                SetVerticesOnEdges(e1.Start, length2);
+                return true;
+            }
+            return false;
+        }
+
+        public void SetVerticesOnEdges(Vertice v, double length)
+        {
+            (Edge, Edge) edges = GetEdgesFromPoint(v);
+            Edge stateEdge = null;
+            Edge moveEdge = null;
+            if(edges.Item1.relation == Relation.Equal)
+            {
+                moveEdge = edges.Item1;
+                stateEdge = edges.Item2;
+            }
+            else
+            {
+                moveEdge = edges.Item2;
+                stateEdge = edges.Item1;
+            }
+
+        }
 
         //HELPERS
         public bool AddRelation(Edge a, Edge b, Relation relation)
         {
             if(a.relation == Relation.None && b.relation == Relation.None)
             {
-                relationNumber++;
-                ps.Add((a, b, relation));
-                a.relation = relation;
-                a.relationNumber = relationNumber;
-                b.relation = relation;
-                b.relationNumber = relationNumber;
-                return true;
+                (Edge, Edge) e1 = GetEdgesFromPoint(a.Start);
+                (Edge, Edge) e2 = GetEdgesFromPoint(a.End);
+                (Edge, Edge) e3 = GetEdgesFromPoint(b.Start);
+                (Edge, Edge) e4 = GetEdgesFromPoint(b.End);
+                //if (e1.Item1.relation == Relation.Equal || e1.Item2.relation == Relation.Equal || e2.Item1.relation == Relation.Equal || e2.Item2.relation == Relation.Equal || e3.Item1.relation == Relation.Equal || e3.Item2.relation == Relation.Equal || e4.Item1.relation == Relation.Equal || e4.Item2.relation == Relation.Equal)
+                //{
+                //    //There is no possibility to have two equal 
+                //    return false;
+                //}
+                if(true)
+                {
+                    relationNumber++;
+                    ps.Add((a, b, relation));
+                    a.relation = relation;
+                    a.relationNumber = relationNumber;
+                    b.relation = relation;
+                    b.relationNumber = relationNumber;
+                    if (relation == Relation.Equal)
+                    {
+                        if (!SetEdgesEqual(a, b, new Vertice(-1, -1)))
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
             }
             return false;
         }
