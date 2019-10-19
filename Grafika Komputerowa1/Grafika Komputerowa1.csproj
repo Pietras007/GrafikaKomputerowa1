@@ -58,6 +58,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DistanceHelpers.cs" />
     <Compile Include="Models\CollectionFigure.cs" />
     <Compile Include="Models\Edge.cs" />
     <Compile Include="Models\Figure.cs" />
@@ -67,6 +68,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelationLogic\RelationLogic.cs" />
+    <Compile Include="RelationLogic\SetPointForEqual.cs" />
+    <Compile Include="RelationLogic\SetPointForPerpendicular.cs" />
     <Compile Include="RelationPopup.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -1,4 +1,5 @@
 ﻿using Grafika_Komputerowa1.Constans;
+using Grafika_Komputerowa1.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -163,10 +164,7 @@ namespace Grafika_Komputerowa1.Models
             }
             return false;
         }
-        public double GetEdgeLength(Edge edge)
-        {
-            return Math.Sqrt(Math.Pow(edge.Start.x - edge.End.x, 2) + Math.Pow(edge.Start.y - edge.End.y,2));
-        }
+
 
         //HELPERS
         public bool KeepRelations(Vertice v)
@@ -188,7 +186,7 @@ namespace Grafika_Komputerowa1.Models
                 {
                     if(!IsRelationOk(rel))
                     {
-                        RelationLogic.RelationLogic.KeepRelation(rel);
+                        RelationLogic.RelationLogic.RepairRelation(rel, edges, currentPoint);
                     }
                 }
 
@@ -270,7 +268,7 @@ namespace Grafika_Komputerowa1.Models
         }
         public bool IsEqualRelation(Edge e1, Edge e2)
         {
-            if((int)GetEdgeLength(e1) == (int)GetEdgeLength(e2))
+            if((int)DistanceHelpers.GetEdgeLength(e1) == (int)DistanceHelpers.GetEdgeLength(e2))
             {
                 return true;
             }
