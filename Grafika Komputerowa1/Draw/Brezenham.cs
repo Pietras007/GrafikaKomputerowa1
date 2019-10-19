@@ -42,7 +42,7 @@ namespace Grafika_Komputerowa1.Draw
             int dy = x2 - x1;
             int dx = y2 - y1;
             int d = 2 * dy - dx; //initial value of d 
-            int incrE = 2 * dy; //increment used for move to E
+            int incrN = 2 * dy; //increment used for move to E
             int incrNE = 2 * (dy - dx);//increment used for move to NE
             int x = x1;
             int y = y1;
@@ -51,7 +51,7 @@ namespace Grafika_Komputerowa1.Draw
             {
                 if (d < 0) //chooseE 
                 {
-                    d += incrE;
+                    d += incrN;
                     y++;
                 }
                 else//chooseNE
@@ -96,7 +96,7 @@ namespace Grafika_Komputerowa1.Draw
             int dy = y1 - y2;
             int d = 2 * dy - dx; //initial value of d 
             int incrE = 2 * dy; //increment used for move to E
-            int incrNE = 2 * (dy - dx);//increment used for move to NE
+            int incrSE = 2 * (dy - dx);//increment used for move to NE
             int x = x1;
             int y = y1;
             g.FillRectangle(brush, x, y, 1, 1);
@@ -109,7 +109,7 @@ namespace Grafika_Komputerowa1.Draw
                 }
                 else//chooseNE
                 {
-                    d += incrNE;
+                    d += incrSE;
                     x++;
                     y--;
                 }
@@ -122,8 +122,8 @@ namespace Grafika_Komputerowa1.Draw
             int dy = x2 - x1;
             int dx = y1 - y2;
             int d = 2 * dy - dx; //initial value of d 
-            int incrE = 2 * dy; //increment used for move to E
-            int incrNE = 2 * (dy - dx);//increment used for move to NE
+            int incrS = 2 * dy; //increment used for move to E
+            int incrSE = 2 * (dy - dx);//increment used for move to NE
             int x = x1;
             int y = y1;
             g.FillRectangle(brush, x, y, 1, 1);
@@ -131,12 +131,12 @@ namespace Grafika_Komputerowa1.Draw
             {
                 if (d < 0) //chooseE 
                 {
-                    d += incrE;
+                    d += incrS;
                     y--;
                 }
                 else//chooseNE
                 {
-                    d += incrNE;
+                    d += incrSE;
                     x++;
                     y--;
                 }
