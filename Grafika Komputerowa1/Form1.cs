@@ -39,6 +39,7 @@ namespace Grafika_Komputerowa1
 
         private void pictureBox1_Click(object sender, EventArgs eventargs)
         {
+            
             MouseEventArgs e = (MouseEventArgs)eventargs;
             if (e.Button == MouseButtons.Left)
             {
@@ -79,10 +80,10 @@ namespace Grafika_Komputerowa1
                         {
                             var formPopup = new RelationPopup();
                             formPopup.ShowDialog(this);
-                            Relation relation = formPopup.GetChoosenRelation();
-                            if (relation != Relation.None)
+                            RelationEnum relation = formPopup.GetChoosenRelation();
+                            if (relation != RelationEnum.None)
                             {
-                                fig.AddRelation(edge, edge1, relation);
+                                fig.AddRelation(edge, edge1, relation, this);
                                 collection.RemoveSelection();
                             }
                         }
@@ -98,7 +99,8 @@ namespace Grafika_Komputerowa1
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            if(stripChoice == ToolStripChoice.DrawFigure)
+            pictureBox1.Invalidate();
+            if (stripChoice == ToolStripChoice.DrawFigure)
             {
                 if (e.IsStartPoint(collection))
                 {
@@ -223,7 +225,6 @@ namespace Grafika_Komputerowa1
         private void pictureBox1_Paint_1(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-
             SolidBrush whiteBrush = new SolidBrush(Color.White);
             SolidBrush blackBrush = new SolidBrush(Color.Black);
             SolidBrush orangeBrush = new SolidBrush(Color.Orange);
@@ -236,22 +237,22 @@ namespace Grafika_Komputerowa1
             {
                 foreach (var edge in fig.edges)
                 {
-                    if(edge.relation == Relation.Equal)
+                    if(edge.relation == RelationEnum.Equal)
                     {
                         g.PaintEqualIcon(edge, blackBrush, orangeBrush, font);
                     }
-                    else if (edge.relation == Relation.Perpendicular)
+                    else if (edge.relation == RelationEnum.Perpendicular)
                     {
                         g.PaintPerpendicularIcon(edge, blackBrush, orangeBrush, font);
                     }
 
                     if (edge.isSelected)
                     {
-                        g.BrezenhamAlgorithm(edge.Start, edge.End, orangePen);
+                        g.BrezenhamAlgorithm(edge.Start, edge.End, orangeBrush);
                     }
                     else
                     {
-                        g.BrezenhamAlgorithm(edge.Start, edge.End, pen);
+                        g.BrezenhamAlgorithm(edge.Start, edge.End, blackBrush);
                     }
                 }
 
@@ -260,11 +261,11 @@ namespace Grafika_Komputerowa1
                     g.FillRectangle(blackBrush, p.x - CONST.pointHalf, p.y - CONST.pointHalf, CONST.pointSize, CONST.pointSize);
                 }
             }
-            pictureBox1.Invalidate();
         }
 
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
+            pictureBox1.Invalidate();
             if (stripChoice == ToolStripChoice.MoveVertice)
             {
                 Vertice p = collection.GetPoint(new Vertice(e.X, e.Y));

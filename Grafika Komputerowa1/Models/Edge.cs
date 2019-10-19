@@ -9,7 +9,7 @@ namespace Grafika_Komputerowa1.Models
 {
     public class Edge
     {
-        public Relation relation { get; set; }
+        public RelationEnum relation { get; set; }
         public Vertice Start { get; set; }
         public Vertice End { get; set; }
         public bool isSelected { get; set; }
@@ -18,7 +18,7 @@ namespace Grafika_Komputerowa1.Models
         {
             Start = x;
             End = y;
-            relation = Relation.None;
+            relation = RelationEnum.None;
             isSelected = false;
             relationNumber = -1;
         }

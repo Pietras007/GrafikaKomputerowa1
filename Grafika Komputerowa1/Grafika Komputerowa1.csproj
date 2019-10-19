@@ -61,10 +61,12 @@
     <Compile Include="Models\CollectionFigure.cs" />
     <Compile Include="Models\Edge.cs" />
     <Compile Include="Models\Figure.cs" />
+    <Compile Include="Models\Relation.cs" />
     <Compile Include="Models\TODO.cs" />
     <Compile Include="Models\Vertice.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RelationLogic\RelationLogic.cs" />
     <Compile Include="RelationPopup.cs">
       <SubType>Form</SubType>
     </Compile>

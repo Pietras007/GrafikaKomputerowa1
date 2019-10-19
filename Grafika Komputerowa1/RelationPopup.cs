@@ -13,7 +13,7 @@ namespace Grafika_Komputerowa1
 {
     public partial class RelationPopup : Form
     {
-        Relation relation;
+        RelationEnum relation;
         public RelationPopup()
         {
             InitializeComponent();
@@ -21,23 +21,23 @@ namespace Grafika_Komputerowa1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            relation = Relation.None;
+            relation = RelationEnum.None;
             Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            relation = Relation.Equal;
+            relation = RelationEnum.Equal;
             Close();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            relation = Relation.Perpendicular;
+            relation = RelationEnum.Perpendicular;
             Close();
         }
 
-        public Relation GetChoosenRelation()
+        public RelationEnum GetChoosenRelation()
         {
             return relation;
         }

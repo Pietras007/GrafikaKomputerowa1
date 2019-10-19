@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Grafika_Komputerowa1.Models
 {
@@ -12,18 +13,16 @@ namespace Grafika_Komputerowa1.Models
         public bool isFull { get; set; }
         public List<Vertice> points { get; set; }
         public List<Edge> edges { get; set; }
-        public List<(Edge, Edge, Relation)> ps { get; set; }
+        public List<Relation> ps { get; set; }
         public int relationNumber { get; set; }
         public Figure()
         {
             isFull = false;
             points = new List<Vertice>();
             edges = new List<Edge>();
-            ps = new List<(Edge, Edge, Relation)>();
+            ps = new List<Relation>();
             relationNumber = 0;
         }
-
-       
 
         //POINTS
         public bool AddPoint(Vertice point)
@@ -61,18 +60,26 @@ namespace Grafika_Komputerowa1.Models
             if (start != null && end != null)
             {
                 (Edge, Edge) e = GetEdgesFromPoint(start);
-                if (e.Item1 != null)
+                if (!KeepRelations(e.Item2.End))
                 {
-                    e.Item1.End.x = end.x;
-                    e.Item1.End.y = end.y;
+                    MoveFigure(end.x - start.x, end.y - start.y);
+                    return false;
                 }
-                if (e.Item2 != null)
+                else
                 {
-                    e.Item2.Start.x = end.x;
-                    e.Item2.Start.y = end.y;
+                    if (e.Item1 != null)
+                    {
+                        e.Item1.End.x = end.x;
+                        e.Item1.End.y = end.y;
+                    }
+                    if (e.Item2 != null)
+                    {
+                        e.Item2.Start.x = end.x;
+                        e.Item2.Start.y = end.y;
+                    }
+                    start.x = end.x;
+                    start.y = end.y;
                 }
-                start.x = end.x;
-                start.y = end.y;
                 return true;
             }
             return false;
@@ -87,12 +94,28 @@ namespace Grafika_Komputerowa1.Models
                 if (associatedEdges.Item1 != null)
                 {
                     a = associatedEdges.Item1.Start;
+                    Edge e = associatedEdges.Item1;
+                    if (e.relation != RelationEnum.None)
+                    {
+                        Relation ps1 = ps.FirstOrDefault(x => x.edge1.Equals(e) || x.edge2.Equals(e));
+                        ps1.edge1.relation = RelationEnum.None;
+                        ps1.edge2.relation = RelationEnum.None;
+                        ps.Remove(ps1);
+                    }
                     RemoveEdge(associatedEdges.Item1);
                 }
 
                 if (associatedEdges.Item2 != null)
                 {
                     b = associatedEdges.Item2.End;
+                    Edge e = associatedEdges.Item2;
+                    if (e.relation != RelationEnum.None)
+                    {
+                        Relation ps2 = ps.FirstOrDefault(x => x.edge1.Equals(e) || x.edge2.Equals(e));
+                        ps2.edge1.relation = RelationEnum.None;
+                        ps2.edge2.relation = RelationEnum.None;
+                        ps.Remove(ps2);
+                    }
                     RemoveEdge(associatedEdges.Item2);
                 }
                 points.Remove(point);
@@ -101,7 +124,11 @@ namespace Grafika_Komputerowa1.Models
             }
             return false;
         }
-
+        public void MovePointXY(Vertice point, int X, int Y)
+        {
+            point.x += X;
+            point.y += Y;
+        }
 
         //EDGES
         public bool AddEdge(Edge edge)
@@ -117,8 +144,11 @@ namespace Grafika_Komputerowa1.Models
         {
             if (edge != null)
             {
-                MovePoint(edge.Start, new Vertice(edge.Start.x + X, edge.Start.y + Y));
-                MovePoint(edge.End, new Vertice(edge.End.x + X, edge.End.y + Y));
+                if (MovePoint(edge.Start, new Vertice(edge.Start.x + X, edge.Start.y + Y)))
+                {
+                    MovePoint(edge.End, new Vertice(edge.End.x + X, edge.End.y + Y));
+                }
+
                 return true;
             }
             return false;
@@ -133,86 +163,158 @@ namespace Grafika_Komputerowa1.Models
             }
             return false;
         }
-        public bool SetEdgesEqual(Edge e1, Edge e2, Vertice v)
+        public double GetEdgeLength(Edge edge)
         {
-            double length1 = Math.Sqrt(Math.Pow(e1.Start.x - e1.End.x, 2) + Math.Pow(e1.Start.y - e1.End.y, 2));
-            double length2 = Math.Sqrt(Math.Pow(e2.Start.x - e2.End.x, 2) + Math.Pow(e2.Start.y - e2.End.y, 2));
-            Edge firstStart = GetEdgesFromPoint(e1.Start).Item1;
-            Edge firstEnd = GetEdgesFromPoint(e1.End).Item2;
-            Edge secondStart = GetEdgesFromPoint(e2.Start).Item1;
-            Edge secondEnd = GetEdgesFromPoint(e2.End).Item2;
-            if(secondStart.DistanceFrom(e2.End) <= length1 && !v.Equals(e2.End))
-            {
-                SetVerticesOnEdges(e2.End, length1);
-                return true;
-            }
-            else if(secondEnd.DistanceFrom(e2.Start) <= length1 && !v.Equals(e2.End))
-            {
-                SetVerticesOnEdges(e2.Start, length1);
-                return true;
-            }
-            else if(firstStart.DistanceFrom(e1.End) <= length2 && !v.Equals(e2.End))
-            {
-                SetVerticesOnEdges(e1.End, length2);
-                return true;
-            }
-            else if(firstEnd.DistanceFrom(e1.Start) <= length2 && !v.Equals(e2.End))
-            {
-                SetVerticesOnEdges(e1.Start, length2);
-                return true;
-            }
-            return false;
-        }
-
-        public void SetVerticesOnEdges(Vertice v, double length)
-        {
-            (Edge, Edge) edges = GetEdgesFromPoint(v);
-            Edge stateEdge = null;
-            Edge moveEdge = null;
-            if(edges.Item1.relation == Relation.Equal)
-            {
-                moveEdge = edges.Item1;
-                stateEdge = edges.Item2;
-            }
-            else
-            {
-                moveEdge = edges.Item2;
-                stateEdge = edges.Item1;
-            }
-
+            return Math.Sqrt(Math.Pow(edge.Start.x - edge.End.x, 2) + Math.Pow(edge.Start.y - edge.End.y,2));
         }
 
         //HELPERS
-        public bool AddRelation(Edge a, Edge b, Relation relation)
+        public bool KeepRelations(Vertice v)
         {
-            if(a.relation == Relation.None && b.relation == Relation.None)
+            List<Vertice> oldVertices = new List<Vertice>(points);
+            int indexer = 0;
+            int maxEdges = edges.Count * 10;
+            Vertice currentPoint = v;
+            while(true)
             {
-                (Edge, Edge) e1 = GetEdgesFromPoint(a.Start);
-                (Edge, Edge) e2 = GetEdgesFromPoint(a.End);
-                (Edge, Edge) e3 = GetEdgesFromPoint(b.Start);
-                (Edge, Edge) e4 = GetEdgesFromPoint(b.End);
-                //if (e1.Item1.relation == Relation.Equal || e1.Item2.relation == Relation.Equal || e2.Item1.relation == Relation.Equal || e2.Item2.relation == Relation.Equal || e3.Item1.relation == Relation.Equal || e3.Item2.relation == Relation.Equal || e4.Item1.relation == Relation.Equal || e4.Item2.relation == Relation.Equal)
-                //{
-                //    //There is no possibility to have two equal 
-                //    return false;
-                //}
-                if(true)
+                (Edge, Edge) edges = GetEdgesFromPoint(currentPoint);
+                if (AllRelationsOk())
                 {
-                    relationNumber++;
-                    ps.Add((a, b, relation));
-                    a.relation = relation;
-                    a.relationNumber = relationNumber;
-                    b.relation = relation;
-                    b.relationNumber = relationNumber;
-                    if (relation == Relation.Equal)
-                    {
-                        if (!SetEdgesEqual(a, b, new Vertice(-1, -1)))
-                        {
-                            return false;
-                        }
-                    }
                     return true;
                 }
+
+                Relation rel = GetRelationFromEdge(edges.Item1);
+                if(rel != null)
+                {
+                    if(!IsRelationOk(rel))
+                    {
+                        RelationLogic.RelationLogic.KeepRelation(rel);
+                    }
+                }
+
+                if(indexer > maxEdges)
+                {
+                    points = oldVertices;
+                    return false;
+                }
+
+                currentPoint = edges.Item2.End;
+                indexer++;
+            }
+        }
+
+        public Relation GetWrongRelation()
+        {
+            foreach (var rel in ps)
+            {
+                if (rel.relation == RelationEnum.Equal)
+                {
+                    if (!IsEqualRelation(rel.edge1, rel.edge2))
+                    {
+                        return rel;
+                    }
+                }
+
+                if (rel.relation == RelationEnum.Perpendicular)
+                {
+                    if (!IsPerpendicularRelation(rel.edge1, rel.edge2))
+                    {
+                        return rel;
+                    }
+                }
+                
+            }
+            return new Relation(new Edge(new Vertice(1,1), new Vertice(1,1)), new Edge(new Vertice(1, 1), new Vertice(1, 1)), RelationEnum.None);
+        }
+        public Relation GetRelationFromEdge(Edge e)
+        {
+            return ps.FirstOrDefault(x => x.edge1.Equals(e) || x.edge2.Equals(e));
+        }
+        public bool AllRelationsOk()
+        {
+            foreach(var rel in ps)
+            {
+                if(rel.relation == RelationEnum.Equal)
+                {
+                    if(!IsEqualRelation(rel.edge1, rel.edge2))
+                    {
+                        return false;
+                    }
+                }
+
+                if(rel.relation == RelationEnum.Perpendicular)
+                {
+                    if(!IsPerpendicularRelation(rel.edge1, rel.edge2))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+        public bool IsRelationOk(Relation relation)
+        {
+            if(relation.relation == RelationEnum.Equal)
+            {
+                return IsEqualRelation(relation.edge1, relation.edge2);
+            }
+            else if (relation.relation == RelationEnum.Perpendicular)
+            {
+                return IsPerpendicularRelation(relation.edge1, relation.edge2);
+            }
+            else
+            {
+                return true;
+            }
+        }
+        public bool IsEqualRelation(Edge e1, Edge e2)
+        {
+            if((int)GetEdgeLength(e1) == (int)GetEdgeLength(e2))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool IsPerpendicularRelation(Edge e1, Edge e2)
+        {
+            double a1 = (double)(e1.End.y - e1.Start.y) / (e1.End.x - e1.Start.x);
+            double a2 = (double)(e2.End.y - e2.Start.y) / (e2.End.x - e2.Start.x);
+            int multiplication100 = (int)(a1 * a2 * 100);
+            if (multiplication100 >=95 && multiplication100 <= 105)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public bool AddRelation(Edge a, Edge b, RelationEnum relation, IWin32Window window)
+        {
+            if (a.relation == RelationEnum.None && b.relation == RelationEnum.None)
+            {
+                relationNumber++;
+                Relation addingRelation = new Relation(a, b, relation);
+                ps.Add(addingRelation);
+                a.relation = relation;
+                a.relationNumber = relationNumber;
+                b.relation = relation;
+                b.relationNumber = relationNumber;
+                //if(!KeepRelations(a.End))
+                //{
+                //    relationNumber--;
+                //    ps.Remove(addingRelation);
+                //    a.relation = RelationEnum.None;
+                //    a.relationNumber = -1;
+                //    b.relation = RelationEnum.None;
+                //    b.relationNumber = -1;
+                //    System.Windows.Forms.MessageBox.Show(window, "No possibility to add relation", "Relation Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //}
+                return true;
             }
             return false;
         }
@@ -227,7 +329,7 @@ namespace Grafika_Komputerowa1.Models
             Vertice po = GetPoint(point);
             if (po != null)
             {
-                if(points.FirstOrDefault().Equals(po))
+                if (points.FirstOrDefault().Equals(po))
                 {
                     return true;
                 }
@@ -236,7 +338,7 @@ namespace Grafika_Komputerowa1.Models
         }//Check if it is start point on figure
         public bool IsPoint(Vertice point)//Check if you click on point
         {
-            foreach(var p in points)
+            foreach (var p in points)
             {
                 if (point.x >= p.x - CONST.pointHalf && point.x <= p.x + CONST.pointHalf && point.y >= p.y - CONST.pointHalf && point.y <= p.y + CONST.pointHalf)
                 {
@@ -247,7 +349,7 @@ namespace Grafika_Komputerowa1.Models
         }
         public Vertice GetPoint(Vertice point)
         {
-            foreach(var p in points)
+            foreach (var p in points)
             {
                 if (point.x >= p.x - CONST.pointHalf && point.x <= p.x + CONST.pointHalf && point.y >= p.y - CONST.pointHalf && point.y <= p.y + CONST.pointHalf)
                 {
@@ -258,9 +360,9 @@ namespace Grafika_Komputerowa1.Models
         }//If you click on point gives reference to point
         public void MoveFigure(int X, int Y)
         {
-            foreach(var e in edges)
+            foreach(var p in points)
             {
-                MoveEdge(e, X, Y);
+                MovePointXY(p, X, Y);
             }
         }//Addes X and Y to all points
         public void AddPointOnEdge(Edge e)
@@ -269,11 +371,11 @@ namespace Grafika_Komputerowa1.Models
             Vertice end = e.End;
             Vertice middle = new Vertice((start.x + end.x) / 2, (start.y + end.y) / 2);
             points.Add(middle);
-            if(e.relation != Relation.None)
+            if (e.relation != RelationEnum.None)
             {
-                (Edge, Edge, Relation) ps1 = ps.FirstOrDefault(x => x.Item1.Equals(e) || x.Item2.Equals(e));
-                ps1.Item1.relation = Relation.None;
-                ps1.Item2.relation = Relation.None;
+                Relation ps1 = ps.FirstOrDefault(x => x.edge1.Equals(e) || x.edge2.Equals(e));
+                ps1.edge1.relation = RelationEnum.None;
+                ps1.edge2.relation = RelationEnum.None;
                 ps.Remove(ps1);
             }
             edges.Remove(e);

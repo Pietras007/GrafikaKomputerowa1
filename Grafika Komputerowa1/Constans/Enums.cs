@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Grafika_Komputerowa1.Constans
 {
-    public enum Relation
+    public enum RelationEnum
     {
         None,
         Equal,
