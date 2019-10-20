@@ -43,19 +43,25 @@ namespace Grafika_Komputerowa1.RelationLogic
                     }
                     else
                     {
-                        //SetPointForEqual.ShortenLineForEdge(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
-                        SetPointForEqual.SetOnLineBetween(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
+                        SetPointForEqual.ShortenLineForEdge(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
+                        //SetPointForEqual.SetOnLineBetween(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
                     }
                 }
                 else if(nextEdge.relation == RelationEnum.Perpendicular)
                 {
-                    if(true)//Odleglosd punktu od prostej jest >= od dlugosci odcinka
+                    Vertice start = currentEdge.Start;
+                    Vertice middle = currentEdge.End;
+                    Vertice end = nextEdge.End;
+                    double d = DistanceHelpers.GetEdgeLength(siblingEdge);
+                    (double, double) line = Line.GetStraightLine(middle, end);
+                    double distance = Line.DistanceVerticeFromLine(line, start);
+                    if (distance >= d)
                     {
-                        //SetPointForEqual.SetAsTriangleEdge();
+                        SetPointForEqual.SetAsTriangleEdge(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
                     }
                     else
                     {
-                        //SetPointForEqual.ShortenLineForEdge();
+                        SetPointForEqual.ShortenLineForEdge(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
                     }
                 }
             }
@@ -71,7 +77,7 @@ namespace Grafika_Komputerowa1.RelationLogic
                 }
                 else if (nextEdge.relation == RelationEnum.Perpendicular)
                 {
-
+                    SetPointForPerpendicular.SetPerpednicularNextPerpendicular(siblingEdge, currentEdge, nextEdge);
                 }
             }
             return true;

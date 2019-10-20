@@ -33,9 +33,27 @@ namespace Grafika_Komputerowa1.RelationLogic
             PointHelpers.SetPointXY(middle, missingPoint.x, missingPoint.y);
         }
 
-        public static void SetAsTriangleEdge(double d, Edge currentEdge, Edge nextEdge)
+        public static void SetAsTriangleEdge(double d2, Edge currentEdge, Edge nextEdge)
         {
-            //zachowaj kat nastepnego
+            Vertice start = currentEdge.Start;
+            Vertice middle = currentEdge.End;
+            Vertice end = nextEdge.End;
+            (double, double) nextLine = Line.GetStraightLine(end, middle);
+            (double, double) straightLine = Line.GetStraightLine(end, start);
+            double cos = Angle.GetCosinusFromBetween(nextLine, straightLine);
+            double d = DistanceHelpers.DistanceBetween(start, end);
+            double sqrtDelta = Math.Sqrt(Math.Pow(2 * d * cos, 2) - 4 * (d * d - d2 * d2));
+            double x1 = (2 * d * cos - sqrtDelta) / 2;
+            double x2 = (2 * d * cos + sqrtDelta) / 2;
+            double x = Math.Min(x1, x2);
+            if (x < 0)
+            {
+                x = Math.Max(x1, x2);
+            }
+
+            (Vertice, Vertice) vertices = PointHelpers.GetPointFromLineDistanceAndPoint(nextLine, x, end);
+            Vertice resultVertice = DistanceHelpers.GetCloserVerticeFromVertice(vertices, start);
+            PointHelpers.SetPointXY(middle, resultVertice.x, resultVertice.y);
         }
 
         //public static void ShortenLineForEdge(double d, Edge currentEdge, Edge nextEdge)
@@ -44,7 +62,7 @@ namespace Grafika_Komputerowa1.RelationLogic
         //    Vertice middle = currentEdge.End;
         //    Vertice end = nextEdge.End;
         //    (double, double) lineHelp = Line.GetStraightLine(middle, end);
-        //    Vertice resultVertice = PointHelpers.GetPointInProportion(1/2, middle, end);
+        //    Vertice resultVertice = PointHelpers.GetPointInProportion(1 / 2, middle, end);
         //    (double, double) line = Line.GetStraightLine(start, resultVertice);
         //    (Vertice, Vertice) midVertices = PointHelpers.GetPointFromLineDistanceAndPoint(line, d, currentEdge.Start);
         //    Vertice midVertice = DistanceHelpers.GetCloserVerticeFromLine(lineHelp, midVertices);

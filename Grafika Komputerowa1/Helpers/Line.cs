@@ -35,6 +35,13 @@ namespace Grafika_Komputerowa1.Helpers
             double distance = (double)Math.Abs(A * point.x + B * point.y + C) / Math.Sqrt(A * A + B * B);
             return distance;
         }
+
+        public static Vertice IntersectionOfLines((double, double) line1, (double, double) line2)
+        {
+            double x = (line2.Item2 - line1.Item2) / (line1.Item1 - line2.Item1);
+            double y = line1.Item1 * x + line1.Item2;
+            return new Vertice((int)x, (int)y);
+        }
        
     }
 }

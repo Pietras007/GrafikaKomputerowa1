@@ -227,40 +227,39 @@ namespace Grafika_Komputerowa1
         private void pictureBox1_Paint_1(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-            SolidBrush whiteBrush = new SolidBrush(Color.White);
-            SolidBrush blackBrush = new SolidBrush(Color.Black);
-            SolidBrush orangeBrush = new SolidBrush(Color.Orange);
-            Pen pen = new Pen(Color.Black);
-            Pen orangePen = new Pen(Color.Orange);
-            Font font = new Font("Verdana", 8);
-            g.FillRectangle(whiteBrush, 0, 0, CONST.bitmapX, CONST.bitmapY);
-
-            foreach (var fig in collection.figures)
+            using (SolidBrush whiteBrush = new SolidBrush(Color.White), blackBrush = new SolidBrush(Color.Black), orangeBrush = new SolidBrush(Color.Orange))
             {
-                foreach (var edge in fig.edges)
+                using (Font font = new Font("Verdana", 8))
                 {
-                    if(edge.relation == RelationEnum.Equal)
+                    g.FillRectangle(whiteBrush, 0, 0, CONST.bitmapX, CONST.bitmapY);
+                    foreach (var fig in collection.figures)
                     {
-                        g.PaintEqualIcon(edge, blackBrush, orangeBrush, font);
-                    }
-                    else if (edge.relation == RelationEnum.Perpendicular)
-                    {
-                        g.PaintPerpendicularIcon(edge, blackBrush, orangeBrush, font);
-                    }
+                        foreach (var edge in fig.edges)
+                        {
+                            if (edge.relation == RelationEnum.Equal)
+                            {
+                                g.PaintEqualIcon(edge, blackBrush, orangeBrush, font);
+                            }
+                            else if (edge.relation == RelationEnum.Perpendicular)
+                            {
+                                g.PaintPerpendicularIcon(edge, blackBrush, orangeBrush, font);
+                            }
 
-                    if (edge.isSelected)
-                    {
-                        g.BrezenhamAlgorithm(edge.Start, edge.End, orangeBrush);
-                    }
-                    else
-                    {
-                        g.BrezenhamAlgorithm(edge.Start, edge.End, blackBrush);
-                    }
-                }
+                            if (edge.isSelected)
+                            {
+                                g.BrezenhamAlgorithm(edge.Start, edge.End, orangeBrush);
+                            }
+                            else
+                            {
+                                g.BrezenhamAlgorithm(edge.Start, edge.End, blackBrush);
+                            }
+                        }
 
-                foreach (var p in fig.points)
-                {
-                    g.FillRectangle(blackBrush, p.x - CONST.pointHalf, p.y - CONST.pointHalf, CONST.pointSize, CONST.pointSize);
+                        foreach (var p in fig.points)
+                        {
+                            g.FillRectangle(blackBrush, p.x - CONST.pointHalf, p.y - CONST.pointHalf, CONST.pointSize, CONST.pointSize);
+                        }
+                    }
                 }
             }
         }
