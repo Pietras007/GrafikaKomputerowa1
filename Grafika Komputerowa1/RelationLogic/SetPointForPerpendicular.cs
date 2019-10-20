@@ -22,5 +22,29 @@ namespace Grafika_Komputerowa1.RelationLogic
             Vertice resultVertice = DistanceHelpers.GetCloserVerticeFromVertice(vertices, middle);
             PointHelpers.SetPointXY(middle, resultVertice.x, resultVertice.y);
         }
+
+        public static void SetPerpednicularNextEqual(Edge siblingEdge, Edge currentEdge, Edge nextEdge)
+        {
+            Vertice start = currentEdge.Start;
+            Vertice middle = currentEdge.End;
+            Vertice end = nextEdge.End;
+            double d = DistanceHelpers.GetEdgeLength(siblingEdge);
+            double d2 = DistanceHelpers.GetEdgeLength(nextEdge);
+            (double, double) line = Line.GetStraightLine(siblingEdge.Start, siblingEdge.End);
+            (double, double) perpendicularLine = Line.GetPerpendicularThroughPoint(line, start);
+            (double, double) distanceLine = Line.GetStraightLine(start, end);
+            double cos = Angle.GetCosinusFromBetween(perpendicularLine, distanceLine);
+            double sqrtDelta = Math.Sqrt(Math.Pow(2*d*cos, 2) - 4*(d*d - d2*d2));
+            double x1 = (2*d*cos - sqrtDelta) / 2;
+            double x2 = (2*d*cos + sqrtDelta) / 2;
+            double x = Math.Min(x1, x2);
+            if(x < 0)
+            {
+                x = Math.Max(x1, x2);
+            }
+            (Vertice, Vertice) vertices = PointHelpers.GetPointFromLineDistanceAndPoint(perpendicularLine, x, start);
+            Vertice resultVertice = DistanceHelpers.GetCloserVerticeFromVertice(vertices, middle);
+            PointHelpers.SetPointXY(middle, resultVertice.x, resultVertice.y);
+        }
     }
 }

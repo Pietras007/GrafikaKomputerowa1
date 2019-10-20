@@ -67,7 +67,7 @@ namespace Grafika_Komputerowa1.RelationLogic
                 }
                 else if (nextEdge.relation == RelationEnum.Equal)
                 {
-                    //No problem
+                    SetPointForPerpendicular.SetPerpednicularNextEqual(siblingEdge, currentEdge, nextEdge);
                 }
                 else if (nextEdge.relation == RelationEnum.Perpendicular)
                 {

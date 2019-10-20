@@ -59,6 +59,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Angle.cs" />
     <Compile Include="Helpers\DistanceHelpers.cs" />
     <Compile Include="Helpers\PointHelpers.cs" />
     <Compile Include="Helpers\Line.cs" />

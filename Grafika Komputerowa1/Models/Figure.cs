@@ -290,8 +290,8 @@ namespace Grafika_Komputerowa1.Models
         {
             double a1 = (double)(e1.End.y - e1.Start.y) / (e1.End.x - e1.Start.x);
             double a2 = (double)(e2.End.y - e2.Start.y) / (e2.End.x - e2.Start.x);
-            int multiplication100 = (int)(a1 * a2 * 1000 * -1);
-            if (multiplication100 >=999 && multiplication100 <= 1001)
+            int multiplication100 = (int)(a1 * a2 * 100 * -1);
+            if (multiplication100 >=90 && multiplication100 <= 101)
             {
                 return true;
             }
