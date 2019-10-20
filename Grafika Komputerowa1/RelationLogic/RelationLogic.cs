@@ -26,16 +26,13 @@ namespace Grafika_Komputerowa1.RelationLogic
             {
                 if(nextEdge.relation == RelationEnum.None)
                 {
-                    if (DistanceHelpers.GetEdgeLength(siblingEdge) < DistanceHelpers.DistanceBetween(currentEdge.Start, nextEdge.End))
+                    if (DistanceHelpers.GetEdgeLength(siblingEdge) < DistanceHelpers.DistanceBetween(currentEdge.Start, nextEdge.End) - 20)
                     {
                         SetPointForEqual.SetOnLineBetween(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
-                        //Form1.pictureBOX.Invalidate();
                     }
                     else
                     {
-                        //Zakomentowane jest lepsza opcja
-                        //SetPointForEqual.ShortenLineForEdge();
-                        SetPointForEqual.SetAsTriangleLength(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
+                        SetPointForEqual.ShortenLineForEdge(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
                     }
                 }
                 else if (nextEdge.relation == RelationEnum.Equal)
@@ -46,18 +43,19 @@ namespace Grafika_Komputerowa1.RelationLogic
                     }
                     else
                     {
+                        //SetPointForEqual.ShortenLineForEdge(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
                         SetPointForEqual.SetOnLineBetween(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
                     }
                 }
                 else if(nextEdge.relation == RelationEnum.Perpendicular)
                 {
-                    if(true)//Odleglosd punktu od prostej jest <= od dlugosci odcinka
+                    if(true)//Odleglosd punktu od prostej jest >= od dlugosci odcinka
                     {
-                        SetPointForEqual.SetAsTriangleEdge();
+                        //SetPointForEqual.SetAsTriangleEdge();
                     }
                     else
                     {
-                        SetPointForEqual.ShortenLineForEdge();
+                        //SetPointForEqual.ShortenLineForEdge();
                     }
                 }
             }
@@ -65,7 +63,7 @@ namespace Grafika_Komputerowa1.RelationLogic
             {
                 if (nextEdge.relation == RelationEnum.None)
                 {
-                    //No problem
+                    SetPointForPerpendicular.SetPerpednicular(siblingEdge, currentEdge, nextEdge);
                 }
                 else if (nextEdge.relation == RelationEnum.Equal)
                 {

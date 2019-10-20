@@ -17,11 +17,8 @@ namespace Grafika_Komputerowa1.RelationLogic
             Vertice end = nextEdge.End;
             double distance = DistanceHelpers.DistanceBetween(start, end);
             double proportion = d / distance;
-            double xDifference = end.x - start.x;
-            double yDifference = end.y - start.y;
-            int X = (int)(proportion * xDifference);
-            int Y = (int)(proportion * yDifference);
-            PointHelpers.SetPointXY(middle, start.x + X, start.y + Y);
+            Vertice resultVertice = PointHelpers.GetPointInProportion(proportion, start, end);
+            PointHelpers.SetPointXY(middle, resultVertice.x, resultVertice.y);
         }
 
         public static void SetAsTriangleLength(double d, Edge currentEdge, Edge nextEdge)
@@ -36,14 +33,36 @@ namespace Grafika_Komputerowa1.RelationLogic
             PointHelpers.SetPointXY(middle, missingPoint.x, missingPoint.y);
         }
 
-        public static void SetAsTriangleEdge()
+        public static void SetAsTriangleEdge(double d, Edge currentEdge, Edge nextEdge)
         {
             //zachowaj kat nastepnego
         }
 
-        public static void ShortenLineForEdge()
+        //public static void ShortenLineForEdge(double d, Edge currentEdge, Edge nextEdge)
+        //{
+        //    Vertice start = currentEdge.Start;
+        //    Vertice middle = currentEdge.End;
+        //    Vertice end = nextEdge.End;
+        //    (double, double) lineHelp = Line.GetStraightLine(middle, end);
+        //    Vertice resultVertice = PointHelpers.GetPointInProportion(1/2, middle, end);
+        //    (double, double) line = Line.GetStraightLine(start, resultVertice);
+        //    (Vertice, Vertice) midVertices = PointHelpers.GetPointFromLineDistanceAndPoint(line, d, currentEdge.Start);
+        //    Vertice midVertice = DistanceHelpers.GetCloserVerticeFromLine(lineHelp, midVertices);
+        //    PointHelpers.SetPointXY(middle, midVertice.x, midVertice.y);
+        //}
+
+        public static void ShortenLineForEdge(double d, Edge currentEdge, Edge nextEdge)
         {
-            //prosta prostopadla do prostej ktora mamy w nastepnym przechodzaza przez punkt start.start i na tej prostej dlugosc odpowiednia
+            Vertice start = currentEdge.Start;
+            Vertice middle = currentEdge.End;
+            Vertice end = nextEdge.End;
+            Vertice helper = new Vertice(end.x - CONST.ShortenLineForEdgeDistance, end.y - CONST.ShortenLineForEdgeDistance);
+            (double, double) lineHelp = Line.GetStraightLine(helper, end);
+            Vertice resultVertice = PointHelpers.GetPointInProportion(1 / 2, helper, end);
+            (double, double) line = Line.GetStraightLine(start, resultVertice);
+            (Vertice, Vertice) midVertices = PointHelpers.GetPointFromLineDistanceAndPoint(line, d, currentEdge.Start);
+            Vertice midVertice = DistanceHelpers.GetCloserVerticeFromLine(lineHelp, midVertices);
+            PointHelpers.SetPointXY(middle, midVertice.x, midVertice.y);
         }
     }
 }

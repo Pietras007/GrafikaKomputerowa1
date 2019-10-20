@@ -21,18 +21,14 @@ namespace Grafika_Komputerowa1.Helpers
             double distance = DistanceHelpers.DistanceBetween(pStart, pEnd);
             double height = (2 * area) / distance;
             double z = Pythagoras.GetCathetus(height, d);
-            double t = Pythagoras.GetCathetus(height, d2);
 
             double proportion = z / distance;
-            double xDifference = pEnd.x - pStart.x;
-            double yDifference = pEnd.y - pStart.y;
-            int X = (int)(proportion * xDifference);
-            int Y = (int)(proportion * yDifference);
-            PointHelpers.SetPointXY(midPoint, pStart.x + X, pStart.y + Y);
+            Vertice resultVertice = PointHelpers.GetPointInProportion(proportion, pStart, pEnd);
+            PointHelpers.SetPointXY(midPoint, resultVertice.x, resultVertice.y);
 
             (double, double) line = Line.GetStraightLine(pStart, pEnd);
             (double, double) perpendicularLine = Line.GetPerpendicularThroughPoint(line, midPoint);
-            return PointHelpers.GetPointFromLineDistanceAndPoint(perpendicularLine, height, midPoint);
+            return PointHelpers.GetPointFromLineDistanceAndPoint(perpendicularLine, height, midPoint).Item2;
         }
     }
 }

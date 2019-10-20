@@ -22,11 +22,19 @@ namespace Grafika_Komputerowa1.Helpers
 
         public static (double, double) GetPerpendicularThroughPoint((double, double) line, Vertice point)
         {
-            double a = -1 / line.Item1;
+            double a = -1.0 / line.Item1;
             double b = point.y - a * point.x; 
             return (a, b);
         }
 
+        public static double DistanceVerticeFromLine((double, double) line, Vertice point)
+        {
+            double A = line.Item1;
+            double B = 1;
+            double C = line.Item2;
+            double distance = (double)Math.Abs(A * point.x + B * point.y + C) / Math.Sqrt(A * A + B * B);
+            return distance;
+        }
        
     }
 }

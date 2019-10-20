@@ -167,7 +167,7 @@ namespace Grafika_Komputerowa1.Models
         {
             List<Vertice> oldVertices = points.Clone();
             int indexer = 0;
-            int maxEdges = edges.Count * 10;
+            int maxEdges = edges.Count * 4;
             Vertice startPoint = GetEdgesFromPoint(v).Item1.Start;
             Vertice currentPoint = v;
             while(true)
@@ -290,8 +290,8 @@ namespace Grafika_Komputerowa1.Models
         {
             double a1 = (double)(e1.End.y - e1.Start.y) / (e1.End.x - e1.Start.x);
             double a2 = (double)(e2.End.y - e2.Start.y) / (e2.End.x - e2.Start.x);
-            int multiplication100 = (int)(a1 * a2 * 100);
-            if (multiplication100 >=95 && multiplication100 <= 105)
+            int multiplication100 = (int)(a1 * a2 * 1000 * -1);
+            if (multiplication100 >=999 && multiplication100 <= 1001)
             {
                 return true;
             }

@@ -15,5 +15,6 @@ namespace Grafika_Komputerowa1
         public static int sizeRelationIcon = 15;
         public static int distanceRelationIcon = 15;
         public static int differenceToMakeEdgesEqual = 5;
+        public static int ShortenLineForEdgeDistance = 15;
     }
 }
