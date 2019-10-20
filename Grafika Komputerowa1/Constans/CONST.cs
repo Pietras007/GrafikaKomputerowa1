@@ -14,5 +14,6 @@ namespace Grafika_Komputerowa1
         public static int bitmapY = 421;
         public static int sizeRelationIcon = 15;
         public static int distanceRelationIcon = 15;
+        public static int differenceToMakeEdgesEqual = 5;
     }
 }

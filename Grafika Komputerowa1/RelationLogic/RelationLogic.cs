@@ -28,22 +28,25 @@ namespace Grafika_Komputerowa1.RelationLogic
                 {
                     if (DistanceHelpers.GetEdgeLength(siblingEdge) < DistanceHelpers.DistanceBetween(currentEdge.Start, nextEdge.End))
                     {
-                        SetPointForEqual.SetOnLineBetween();
+                        SetPointForEqual.SetOnLineBetween(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
+                        //Form1.pictureBOX.Invalidate();
                     }
                     else
                     {
-                        SetPointForEqual.ShortenLineForEdge();
+                        //Zakomentowane jest lepsza opcja
+                        //SetPointForEqual.ShortenLineForEdge();
+                        SetPointForEqual.SetAsTriangleLength(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
                     }
                 }
                 else if (nextEdge.relation == RelationEnum.Equal)
                 {
                     if (DistanceHelpers.GetEdgeLength(siblingEdge) + DistanceHelpers.GetEdgeLength(nextEdge) >= DistanceHelpers.DistanceBetween(currentEdge.Start, nextEdge.End))
                     {
-                        SetPointForEqual.SetAsTriangleLength();
+                        SetPointForEqual.SetAsTriangleLength(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
                     }
                     else
                     {
-                        SetPointForEqual.SetOnLineBetween();
+                        SetPointForEqual.SetOnLineBetween(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
                     }
                 }
                 else if(nextEdge.relation == RelationEnum.Perpendicular)

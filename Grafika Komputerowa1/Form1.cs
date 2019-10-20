@@ -24,6 +24,8 @@ namespace Grafika_Komputerowa1
         public Vertice clickedPointOnEdge;
         public Vertice clickedPointOnFigure;
         public bool isMoving;
+        public static PictureBox pictureBOX;
+
         public Form1()
         {
             stripChoice = ToolStripChoice.DrawFigure;
@@ -34,7 +36,7 @@ namespace Grafika_Komputerowa1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            pictureBOX = pictureBox1;
         }
 
         private void pictureBox1_Click(object sender, EventArgs eventargs)

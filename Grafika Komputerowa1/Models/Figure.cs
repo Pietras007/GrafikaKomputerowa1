@@ -1,4 +1,5 @@
 ﻿using Grafika_Komputerowa1.Constans;
+using Grafika_Komputerowa1.Extentions;
 using Grafika_Komputerowa1.Helpers;
 using System;
 using System.Collections.Generic;
@@ -125,11 +126,6 @@ namespace Grafika_Komputerowa1.Models
             }
             return false;
         }
-        public void MovePointXY(Vertice point, int X, int Y)
-        {
-            point.x += X;
-            point.y += Y;
-        }
 
         //EDGES
         public bool AddEdge(Edge edge)
@@ -169,34 +165,40 @@ namespace Grafika_Komputerowa1.Models
         //HELPERS
         public bool KeepRelations(Vertice v)
         {
-            List<Vertice> oldVertices = new List<Vertice>(points);
+            List<Vertice> oldVertices = points.Clone();
             int indexer = 0;
             int maxEdges = edges.Count * 10;
+            Vertice startPoint = GetEdgesFromPoint(v).Item1.Start;
             Vertice currentPoint = v;
             while(true)
             {
-                (Edge, Edge) edges = GetEdgesFromPoint(currentPoint);
+                (Edge, Edge) edgesFromPoint = GetEdgesFromPoint(currentPoint);
                 if (AllRelationsOk())
                 {
                     return true;
                 }
-
-                Relation rel = GetRelationFromEdge(edges.Item1);
-                if(rel != null)
+                if (!currentPoint.Equals(startPoint))
                 {
-                    if(!IsRelationOk(rel))
+                    Relation rel = GetRelationFromEdge(edgesFromPoint.Item1);
+                    if (rel != null)
                     {
-                        RelationLogic.RelationLogic.RepairRelation(rel, edges, currentPoint);
+                        if (!IsRelationOk(rel))
+                        {
+                            RelationLogic.RelationLogic.RepairRelation(rel, edgesFromPoint, currentPoint);
+                        }
                     }
                 }
-
-                if(indexer > maxEdges)
+                if (indexer > maxEdges)
                 {
-                    points = oldVertices;
+                    for (int i = 0; i < oldVertices.Count; i++)
+                    {
+                        points[i].x = oldVertices[i].x;
+                        points[i].y = oldVertices[i].y;
+                    }
                     return false;
                 }
 
-                currentPoint = edges.Item2.End;
+                currentPoint = edgesFromPoint.Item2.End;
                 indexer++;
             }
         }
@@ -268,7 +270,14 @@ namespace Grafika_Komputerowa1.Models
         }
         public bool IsEqualRelation(Edge e1, Edge e2)
         {
-            if((int)DistanceHelpers.GetEdgeLength(e1) == (int)DistanceHelpers.GetEdgeLength(e2))
+            //Because of unencountered exceptions sometimes xD
+            if((int)DistanceHelpers.GetEdgeLength(e1) - (int)DistanceHelpers.GetEdgeLength(e2) == int.MinValue)
+            {
+                return false;
+            }
+
+            int dist = Math.Abs((int)DistanceHelpers.GetEdgeLength(e1) - (int)DistanceHelpers.GetEdgeLength(e2));
+            if (dist < CONST.differenceToMakeEdgesEqual)
             {
                 return true;
             }
@@ -302,16 +311,16 @@ namespace Grafika_Komputerowa1.Models
                 a.relationNumber = relationNumber;
                 b.relation = relation;
                 b.relationNumber = relationNumber;
-                //if(!KeepRelations(a.End))
-                //{
-                //    relationNumber--;
-                //    ps.Remove(addingRelation);
-                //    a.relation = RelationEnum.None;
-                //    a.relationNumber = -1;
-                //    b.relation = RelationEnum.None;
-                //    b.relationNumber = -1;
-                //    System.Windows.Forms.MessageBox.Show(window, "No possibility to add relation", "Relation Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                //}
+                if (!KeepRelations(a.End))
+                {
+                    relationNumber--;
+                    ps.Remove(addingRelation);
+                    a.relation = RelationEnum.None;
+                    a.relationNumber = -1;
+                    b.relation = RelationEnum.None;
+                    b.relationNumber = -1;
+                    System.Windows.Forms.MessageBox.Show(window, "No possibility to add relation", "Relation Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
                 return true;
             }
             return false;
@@ -360,7 +369,7 @@ namespace Grafika_Komputerowa1.Models
         {
             foreach(var p in points)
             {
-                MovePointXY(p, X, Y);
+                PointHelpers.MovePointXY(p, X, Y);
             }
         }//Addes X and Y to all points
         public void AddPointOnEdge(Edge e)
