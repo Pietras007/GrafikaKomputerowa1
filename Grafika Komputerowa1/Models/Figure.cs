@@ -166,13 +166,18 @@ namespace Grafika_Komputerowa1.Models
         public bool KeepRelations(Vertice v)
         {
             List<Vertice> oldVertices = points.Clone();
+            
             int indexer = 0;
             int maxEdges = edges.Count * 4;
             Vertice startPoint = GetEdgesFromPoint(v).Item1.Start;
+            Edge startEdge = GetEdgesFromPoint(v).Item1;
             Vertice currentPoint = v;
+            Vertice currentReversePoint = v;
+            List<Edge> reversedEdgeList = KeepRelationsHelper.GetReversedEdgesList(edges);
             while (true)
             {
                 (Edge, Edge) edgesFromPoint = GetEdgesFromPoint(currentPoint);
+                (Edge, Edge) edgesReverseFromPoint = KeepRelationsHelper.GetEdgesFromPointListEdge(currentReversePoint, reversedEdgeList);
                 if (AllRelationsOk())
                 {
                     for (int i = oldVertices.Count - 1; i >= 0; i--)
@@ -192,6 +197,19 @@ namespace Grafika_Komputerowa1.Models
                         }
                     }
                 }
+
+                if (!currentReversePoint.Equals(startPoint))
+                {
+                    Relation rel = KeepRelationsHelper.GetRelationFromEdgeListRelation(edgesFromPoint.Item1, ps);
+                    if (rel != null)
+                    {
+                        if (!IsRelationOk(rel))
+                        {
+                            RelationLogic.RelationLogic.RepairRelation(rel, edgesReverseFromPoint, currentReversePoint);
+                        }
+                    }
+                }
+
                 if (indexer > maxEdges)
                 {
                     for (int i = 0; i < oldVertices.Count; i++)
@@ -207,6 +225,7 @@ namespace Grafika_Komputerowa1.Models
                 }
 
                 currentPoint = edgesFromPoint.Item2.End;
+                currentReversePoint = edgesReverseFromPoint.Item2.End;
                 indexer++;
             }
         }

@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="Helpers\Angle.cs" />
     <Compile Include="Helpers\DistanceHelpers.cs" />
+    <Compile Include="Helpers\KeepRelationsHelper.cs" />
     <Compile Include="Helpers\PointHelpers.cs" />
     <Compile Include="Helpers\Line.cs" />
     <Compile Include="Helpers\Pythagoras.cs" />
