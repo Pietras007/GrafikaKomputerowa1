@@ -20,6 +20,7 @@ namespace Grafika_Komputerowa1.Constans
         MoveEdge,
         MoveFigure,
         AddRelation,
+        RemoveRelation,
         AddPoint,
         RemovePoint
     }

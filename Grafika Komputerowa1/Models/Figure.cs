@@ -397,6 +397,16 @@ namespace Grafika_Komputerowa1.Models
             edges.Add(new Edge(start, middle));
             edges.Add(new Edge(middle, end));
         }
+        public void RemoveRelation(Edge e)
+        {
+            if (e.relation != RelationEnum.None)
+            {
+                Relation ps1 = ps.FirstOrDefault(x => x.edge1.Equals(e) || x.edge2.Equals(e));
+                ps1.edge1.relation = RelationEnum.None;
+                ps1.edge2.relation = RelationEnum.None;
+                ps.Remove(ps1);
+            }
+        }
         public Edge GetSelectedEdge()
         {
             return edges.FirstOrDefault(e => e.isSelected == true);

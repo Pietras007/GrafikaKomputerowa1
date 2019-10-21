@@ -25,6 +25,7 @@ namespace Grafika_Komputerowa1
         public Vertice clickedPointOnFigure;
         public bool isMoving;
         public static PictureBox pictureBOX;
+        List<object> checkedList = new List<object>();
 
         public Form1()
         {
@@ -94,6 +95,16 @@ namespace Grafika_Komputerowa1
                             collection.RemoveSelection();
                             edge.SetSelected();
                         }
+                    }
+                }
+
+                if (stripChoice == ToolStripChoice.RemoveRelation)
+                {
+                    Edge edge = collection.GetEdgeFromPoint(new Vertice(e.X, e.Y));
+                    if (edge != null)
+                    {
+                        Figure fig = collection.GetFigure(edge);
+                        fig.RemoveRelation(edge);
                     }
                 }
             }
@@ -217,6 +228,19 @@ namespace Grafika_Komputerowa1
                     System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
                 }
             }
+
+            if (stripChoice == ToolStripChoice.RemoveRelation)
+            {
+                Edge edge = collection.GetEdgeFromPoint(new Vertice(e.X, e.Y));
+                if (edge != null)
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Hand;
+                }
+                else
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+                }
+            }
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
@@ -305,27 +329,18 @@ namespace Grafika_Komputerowa1
             }
         }
 
-        private void toolStripLabel1_Click(object sender, EventArgs e)
-        {
-            stripChoice = ToolStripChoice.DrawFigure;
-            collection.RemoveSelection();
-        }
-
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
+            UnCheckAll();
+            Check(sender);
             stripChoice = ToolStripChoice.DrawFigure;
             collection.RemoveSelection();
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            collection.DeleteUnfinishedFigure();
-            stripChoice = ToolStripChoice.MoveVertice;
-            collection.RemoveSelection();
-        }
-
-        private void toolStripLabel2_Click(object sender, EventArgs e)
-        {
+            UnCheckAll();
+            Check(sender);
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.MoveVertice;
             collection.RemoveSelection();
@@ -333,13 +348,8 @@ namespace Grafika_Komputerowa1
 
         private void toolStripButton3_Click(object sender, EventArgs e)
         {
-            collection.DeleteUnfinishedFigure();
-            stripChoice = ToolStripChoice.MoveEdge;
-            collection.RemoveSelection();
-        }
-
-        private void toolStripLabel3_Click(object sender, EventArgs e)
-        {
+            UnCheckAll();
+            Check(sender);
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.MoveEdge;
             collection.RemoveSelection();
@@ -347,13 +357,8 @@ namespace Grafika_Komputerowa1
 
         private void toolStripButton4_Click(object sender, EventArgs e)
         {
-            collection.DeleteUnfinishedFigure();
-            stripChoice = ToolStripChoice.MoveFigure;
-            collection.RemoveSelection();
-        }
-
-        private void toolStripLabel4_Click(object sender, EventArgs e)
-        {
+            UnCheckAll();
+            Check(sender);
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.MoveFigure;
             collection.RemoveSelection();
@@ -361,25 +366,24 @@ namespace Grafika_Komputerowa1
 
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
+            UnCheckAll();
+            Check(sender);
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.AddRelation;
         }
 
-        private void toolStripLabel5_Click(object sender, EventArgs e)
+        private void toolStripButton8_Click(object sender, EventArgs e)
         {
+            UnCheckAll();
+            Check(sender);
             collection.DeleteUnfinishedFigure();
-            stripChoice = ToolStripChoice.AddRelation;
+            stripChoice = ToolStripChoice.RemoveRelation;
         }
 
         private void toolStripButton6_Click(object sender, EventArgs e)
         {
-            collection.DeleteUnfinishedFigure();
-            stripChoice = ToolStripChoice.AddPoint;
-            collection.RemoveSelection();
-        }
-
-        private void toolStripLabel6_Click(object sender, EventArgs e)
-        {
+            UnCheckAll();
+            Check(sender);
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.AddPoint;
             collection.RemoveSelection();
@@ -387,16 +391,32 @@ namespace Grafika_Komputerowa1
 
         private void toolStripButton7_Click(object sender, EventArgs e)
         {
+            UnCheckAll();
+            Check(sender);
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.RemovePoint;
             collection.RemoveSelection();
         }
 
-        private void toolStripLabel7_Click(object sender, EventArgs e)
+        private void Check(object sender)
         {
-            collection.DeleteUnfinishedFigure();
-            stripChoice = ToolStripChoice.RemovePoint;
-            collection.RemoveSelection();
+            if(!checkedList.Contains(sender))
+            {
+                checkedList.Add(sender);
+            }
+            ToolStripButton butt = (ToolStripButton)sender;
+            butt.Checked = true;
         }
+
+        private void UnCheckAll()
+        {
+            foreach(var sender in checkedList)
+            {
+                ToolStripButton butt = (ToolStripButton)sender;
+                butt.Checked = false;
+            }
+        }
+
+       
     }
 }
