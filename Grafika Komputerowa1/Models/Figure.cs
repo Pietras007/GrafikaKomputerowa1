@@ -170,11 +170,15 @@ namespace Grafika_Komputerowa1.Models
             int maxEdges = edges.Count * 4;
             Vertice startPoint = GetEdgesFromPoint(v).Item1.Start;
             Vertice currentPoint = v;
-            while(true)
+            while (true)
             {
                 (Edge, Edge) edgesFromPoint = GetEdgesFromPoint(currentPoint);
                 if (AllRelationsOk())
                 {
+                    for (int i = oldVertices.Count - 1; i >= 0; i--)
+                    {
+                        oldVertices[i].Dispose();
+                    }
                     return true;
                 }
                 if (!currentPoint.Equals(startPoint))
@@ -194,6 +198,10 @@ namespace Grafika_Komputerowa1.Models
                     {
                         points[i].x = oldVertices[i].x;
                         points[i].y = oldVertices[i].y;
+                    }
+                    for (int i = oldVertices.Count - 1; i >= 0; i--)
+                    {
+                        oldVertices[i].Dispose();
                     }
                     return false;
                 }
@@ -222,9 +230,9 @@ namespace Grafika_Komputerowa1.Models
                         return rel;
                     }
                 }
-                
+
             }
-            return new Relation(new Edge(new Vertice(1,1), new Vertice(1,1)), new Edge(new Vertice(1, 1), new Vertice(1, 1)), RelationEnum.None);
+            return new Relation(new Edge(new Vertice(1, 1), new Vertice(1, 1)), new Edge(new Vertice(1, 1), new Vertice(1, 1)), RelationEnum.None);
         }
         public Relation GetRelationFromEdge(Edge e)
         {
@@ -232,19 +240,19 @@ namespace Grafika_Komputerowa1.Models
         }
         public bool AllRelationsOk()
         {
-            foreach(var rel in ps)
+            foreach (var rel in ps)
             {
-                if(rel.relation == RelationEnum.Equal)
+                if (rel.relation == RelationEnum.Equal)
                 {
-                    if(!IsEqualRelation(rel.edge1, rel.edge2))
+                    if (!IsEqualRelation(rel.edge1, rel.edge2))
                     {
                         return false;
                     }
                 }
 
-                if(rel.relation == RelationEnum.Perpendicular)
+                if (rel.relation == RelationEnum.Perpendicular)
                 {
-                    if(!IsPerpendicularRelation(rel.edge1, rel.edge2))
+                    if (!IsPerpendicularRelation(rel.edge1, rel.edge2))
                     {
                         return false;
                     }
@@ -255,7 +263,7 @@ namespace Grafika_Komputerowa1.Models
         }
         public bool IsRelationOk(Relation relation)
         {
-            if(relation.relation == RelationEnum.Equal)
+            if (relation.relation == RelationEnum.Equal)
             {
                 return IsEqualRelation(relation.edge1, relation.edge2);
             }
@@ -271,7 +279,7 @@ namespace Grafika_Komputerowa1.Models
         public bool IsEqualRelation(Edge e1, Edge e2)
         {
             //Because of unencountered exceptions sometimes xD
-            if((int)DistanceHelpers.GetEdgeLength(e1) - (int)DistanceHelpers.GetEdgeLength(e2) == int.MinValue)
+            if ((int)DistanceHelpers.GetEdgeLength(e1) - (int)DistanceHelpers.GetEdgeLength(e2) == int.MinValue)
             {
                 return false;
             }
@@ -291,7 +299,7 @@ namespace Grafika_Komputerowa1.Models
             double a1 = (double)(e1.End.y - e1.Start.y) / (e1.End.x - e1.Start.x);
             double a2 = (double)(e2.End.y - e2.Start.y) / (e2.End.x - e2.Start.x);
             int multiplication100 = (int)(a1 * a2 * 100 * -1);
-            if (multiplication100 >=90 && multiplication100 <= 101)
+            if (multiplication100 >= 90 && multiplication100 <= 101)
             {
                 return true;
             }
@@ -367,7 +375,7 @@ namespace Grafika_Komputerowa1.Models
         }//If you click on point gives reference to point
         public void MoveFigure(int X, int Y)
         {
-            foreach(var p in points)
+            foreach (var p in points)
             {
                 PointHelpers.MovePointXY(p, X, Y);
             }

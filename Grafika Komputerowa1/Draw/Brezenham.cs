@@ -10,10 +10,10 @@ namespace Grafika_Komputerowa1.Draw
 {
     public static class Brezenham
     {
-        public static void BrezenhamAlgorithm(this Graphics g, Models.Vertice start, Models.Vertice end, SolidBrush brush)
+        public static void BrezenhamAlgorithm(this Graphics g, Models.Vertice start, Models.Vertice end, Pen pen, Brush brush)
         {
+
             //g.DrawLine(pen, start.x, start.y, end.x, end.y);
-            //SolidBrush brush = new SolidBrush(Color.Black);
             double a = (double)(end.y - start.y) / (end.x - start.x);
             if (a > 1)
             {

@@ -231,33 +231,38 @@ namespace Grafika_Komputerowa1
             {
                 using (Font font = new Font("Verdana", 8))
                 {
-                    g.FillRectangle(whiteBrush, 0, 0, CONST.bitmapX, CONST.bitmapY);
-                    foreach (var fig in collection.figures)
+                    using (Pen blackPen = new Pen(Color.Black), orangePen = new Pen(Color.Orange))
                     {
-                        foreach (var edge in fig.edges)
+                        g.FillRectangle(whiteBrush, 0, 0, CONST.bitmapX, CONST.bitmapY);
+                        foreach (var fig in collection.figures)
                         {
-                            if (edge.relation == RelationEnum.Equal)
+                            foreach (var edge in fig.edges)
                             {
-                                g.PaintEqualIcon(edge, blackBrush, orangeBrush, font);
-                            }
-                            else if (edge.relation == RelationEnum.Perpendicular)
-                            {
-                                g.PaintPerpendicularIcon(edge, blackBrush, orangeBrush, font);
+                                if (edge.relation == RelationEnum.Equal)
+                                {
+                                    g.PaintEqualIcon(edge, blackBrush, orangeBrush, font);
+                                }
+                                else if (edge.relation == RelationEnum.Perpendicular)
+                                {
+                                    g.PaintPerpendicularIcon(edge, blackBrush, orangeBrush, font);
+                                }
+
+                                if (edge.isSelected)
+                                {
+                                    //g.BrezenhamAlgorithm(edge.Start, edge.End, orangeBrush);
+                                    g.BrezenhamAlgorithm(edge.Start, edge.End, orangePen, orangeBrush);
+                                }
+                                else
+                                {
+                                    //g.BrezenhamAlgorithm(edge.Start, edge.End, blackBrush);
+                                    g.BrezenhamAlgorithm(edge.Start, edge.End, blackPen, blackBrush);
+                                }
                             }
 
-                            if (edge.isSelected)
+                            foreach (var p in fig.points)
                             {
-                                g.BrezenhamAlgorithm(edge.Start, edge.End, orangeBrush);
+                                g.FillRectangle(blackBrush, p.x - CONST.pointHalf, p.y - CONST.pointHalf, CONST.pointSize, CONST.pointSize);
                             }
-                            else
-                            {
-                                g.BrezenhamAlgorithm(edge.Start, edge.End, blackBrush);
-                            }
-                        }
-
-                        foreach (var p in fig.points)
-                        {
-                            g.FillRectangle(blackBrush, p.x - CONST.pointHalf, p.y - CONST.pointHalf, CONST.pointSize, CONST.pointSize);
                         }
                     }
                 }
