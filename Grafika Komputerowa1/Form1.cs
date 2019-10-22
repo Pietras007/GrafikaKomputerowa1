@@ -73,7 +73,14 @@ namespace Grafika_Komputerowa1
                     }
                 }
 
-                if(stripChoice == ToolStripChoice.AddRelation)
+                if (stripChoice == ToolStripChoice.RemoveFigure)
+                {
+                    Figure figure = collection.GetFigureFromClickOnBorder(new Vertice(e.X, e.Y));
+                    collection.figures.Remove(figure);
+                    pictureBox1.Invalidate();
+                }
+
+                if (stripChoice == ToolStripChoice.AddRelation)
                 {
                     Edge edge = collection.GetEdgeFromPoint(new Vertice(e.X, e.Y));
                     if (edge != null)
@@ -192,7 +199,20 @@ namespace Grafika_Komputerowa1
                 }
             }
 
-            if(stripChoice == ToolStripChoice.AddPoint)
+            if (stripChoice == ToolStripChoice.RemoveFigure)
+            {
+                Figure figure = collection.GetFigureFromClickOnBorder(new Vertice(e.X, e.Y));
+                if (figure != null)
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Cross;
+                }
+                else
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.Default;
+                }
+            }
+
+            if (stripChoice == ToolStripChoice.AddPoint)
             {
                 Edge edge = collection.GetEdgeFromPoint(new Vertice(e.X, e.Y));
                 if (edge != null)
@@ -368,6 +388,15 @@ namespace Grafika_Komputerowa1
             collection.RemoveSelection();
             pictureBox1.Invalidate();
         }
+        private void toolStripButton9_Click(object sender, EventArgs e)
+        {
+            UnCheckAll();
+            Check(sender);
+            collection.DeleteUnfinishedFigure();
+            stripChoice = ToolStripChoice.RemoveFigure;
+            collection.RemoveSelection();
+            pictureBox1.Invalidate();
+        }
 
         private void toolStripButton5_Click(object sender, EventArgs e)
         {
@@ -511,5 +540,7 @@ namespace Grafika_Komputerowa1
             figure.KeepRelations(v1);
             pictureBox1.Invalidate();
         }
+
+       
     }
 }
