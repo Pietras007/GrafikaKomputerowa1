@@ -50,9 +50,9 @@ namespace Grafika_Komputerowa1.RelationLogic
             (double, double) straightLine = Line.GetStraightLine(end, start);
             double cos = Angle.GetCosinusFromBetween(nextLine, straightLine);
             double d = DistanceHelpers.DistanceBetween(start, end);
-            double sqrtDelta = Math.Sqrt(Math.Pow(2 * d * cos, 2) - 4 * (d * d - d2 * d2));
-            double x1 = (2 * d * cos - sqrtDelta) / 2;
-            double x2 = (2 * d * cos + sqrtDelta) / 2;
+            double sqrtDelta = Math.Sqrt(Math.Pow(2 * d * cos, 2) - 4 * (d * d * d2 * d2));
+            double x1 = (-2 * d * cos - sqrtDelta) / 2;
+            double x2 = (-2 * d * cos + sqrtDelta) / 2;
             double x = Math.Min(x1, x2);
             if (x < 0)
             {
