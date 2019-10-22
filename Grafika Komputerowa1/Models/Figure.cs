@@ -168,7 +168,7 @@ namespace Grafika_Komputerowa1.Models
             List<Vertice> oldVertices = points.Clone();
             
             int indexer = 0;
-            int maxEdges = edges.Count * 4;
+            int maxEdges = edges.Count * 1;
             Vertice startPoint = GetEdgesFromPoint(v).Item1.Start;
             Edge startEdge = GetEdgesFromPoint(v).Item1;
             Vertice currentPoint = v;

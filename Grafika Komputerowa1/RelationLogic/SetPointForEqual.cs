@@ -18,6 +18,10 @@ namespace Grafika_Komputerowa1.RelationLogic
             double distance = DistanceHelpers.DistanceBetween(start, end);
             double proportion = d / distance;
             Vertice resultVertice = PointHelpers.GetPointInProportion(proportion, start, end);
+            if (resultVertice.x < int.MinValue + 100 || resultVertice.y > int.MaxValue - 100 || resultVertice.y < int.MinValue + 100 || resultVertice.y > int.MaxValue - 100)
+            {
+                int xdddd = 2;
+            }
             PointHelpers.SetPointXY(middle, resultVertice.x, resultVertice.y);
         }
 
@@ -30,6 +34,10 @@ namespace Grafika_Komputerowa1.RelationLogic
             double distance = DistanceHelpers.DistanceBetween(start, end);
             double triangleArea = Triangle.TriangleArea(d, d2, distance);
             Vertice missingPoint = Triangle.GetPointFromTriangleArea(triangleArea, start, end, d, d2);
+            if (missingPoint.x < int.MinValue + 100 || missingPoint.y > int.MaxValue - 100 || missingPoint.y < int.MinValue + 100 || missingPoint.y > int.MaxValue - 100)
+            {
+                int xdddd = 2;
+            }
             PointHelpers.SetPointXY(middle, missingPoint.x, missingPoint.y);
         }
 
@@ -53,6 +61,10 @@ namespace Grafika_Komputerowa1.RelationLogic
 
             (Vertice, Vertice) vertices = PointHelpers.GetPointFromLineDistanceAndPoint(nextLine, x, end);
             Vertice resultVertice = DistanceHelpers.GetCloserVerticeFromVertice(vertices, start);
+            if(resultVertice.x < int.MinValue + 100 || resultVertice.y > int.MaxValue - 100 || resultVertice.y < int.MinValue + 100 || resultVertice.y > int.MaxValue - 100)
+            {
+                int xdddd = 2;
+            }
             PointHelpers.SetPointXY(middle, resultVertice.x, resultVertice.y);
         }
 

@@ -11,20 +11,20 @@ namespace Grafika_Komputerowa1.RelationLogic
 {
     public static class RelationLogic
     {
-        public static bool RepairRelation(Relation relation, (Edge,Edge) edgesPair, Vertice currentPoint)
+        public static bool RepairRelation(Relation relation, (Edge, Edge) edgesPair, Vertice currentPoint)
         {
             Edge currentEdge = edgesPair.Item1;
             Edge nextEdge = edgesPair.Item2;
             RelationEnum currentRelation = relation.relation;
             Edge siblingEdge = null;
-            if(relation.edge1.Equals(currentEdge))
+            if (relation.edge1.Equals(currentEdge))
                 siblingEdge = relation.edge2;
             else
                 siblingEdge = relation.edge1;
 
             if (currentRelation == RelationEnum.Equal)
             {
-                if(nextEdge.relation == RelationEnum.None)
+                if (nextEdge.relation == RelationEnum.None)
                 {
                     if (DistanceHelpers.GetEdgeLength(siblingEdge) < DistanceHelpers.DistanceBetween(currentEdge.Start, nextEdge.End) - 20)
                     {
@@ -47,7 +47,7 @@ namespace Grafika_Komputerowa1.RelationLogic
                         //SetPointForEqual.SetOnLineBetween(DistanceHelpers.GetEdgeLength(siblingEdge), currentEdge, nextEdge);
                     }
                 }
-                else if(nextEdge.relation == RelationEnum.Perpendicular)
+                else if (nextEdge.relation == RelationEnum.Perpendicular)
                 {
                     Vertice start = currentEdge.Start;
                     Vertice middle = currentEdge.End;
@@ -65,20 +65,31 @@ namespace Grafika_Komputerowa1.RelationLogic
                     }
                 }
             }
-            else if(currentRelation == RelationEnum.Perpendicular)
+            else if (currentRelation == RelationEnum.Perpendicular)
             {
-                if (nextEdge.relation == RelationEnum.None)
+                if(nextEdge.relation == RelationEnum.Perpendicular)
                 {
-                    SetPointForPerpendicular.SetPerpednicular(siblingEdge, currentEdge, nextEdge);
+
                 }
-                else if (nextEdge.relation == RelationEnum.Equal)
+                else
                 {
-                    SetPointForPerpendicular.SetPerpednicularNextEqual(siblingEdge, currentEdge, nextEdge);
+                    Vertice midPoint = currentEdge.End;
+                    Vertice ver = Perpendicularity.CalculateVertice(currentEdge.Start, currentEdge.End, siblingEdge);
+                    midPoint.x = ver.x;
+                    midPoint.y = ver.y;
                 }
-                else if (nextEdge.relation == RelationEnum.Perpendicular)
-                {
-                    SetPointForPerpendicular.SetPerpednicularNextPerpendicular(siblingEdge, currentEdge, nextEdge);
-                }
+                //if (nextEdge.relation == RelationEnum.None)
+                //{
+                //    //SetPointForPerpendicular.SetPerpednicular(siblingEdge, currentEdge, nextEdge);
+                //}
+                //else if (nextEdge.relation == RelationEnum.Equal)
+                //{
+                //    //SetPointForPerpendicular.SetPerpednicularNextEqual(siblingEdge, currentEdge, nextEdge);
+                //}
+                //else if (nextEdge.relation == RelationEnum.Perpendicular)
+                //{
+                //    //SetPointForPerpendicular.SetPerpednicularNextPerpendicular(siblingEdge, currentEdge, nextEdge);
+                //}
             }
             return true;
         }

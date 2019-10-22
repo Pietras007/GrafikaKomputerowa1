@@ -28,6 +28,10 @@ namespace Grafika_Komputerowa1.Helpers
 
             (double, double) line = Line.GetStraightLine(pStart, pEnd);
             (double, double) perpendicularLine = Line.GetPerpendicularThroughPoint(line, midPoint);
+            if(line.Item1 == 0)
+            {
+                return new Vertice(midPoint.x, midPoint.y - (int)height);
+            }
             return PointHelpers.GetPointFromLineDistanceAndPoint(perpendicularLine, height, midPoint).Item2;
         }
     }

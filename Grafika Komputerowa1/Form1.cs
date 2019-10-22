@@ -335,6 +335,7 @@ namespace Grafika_Komputerowa1
             Check(sender);
             stripChoice = ToolStripChoice.DrawFigure;
             collection.RemoveSelection();
+            pictureBox1.Invalidate();
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e)
@@ -344,6 +345,7 @@ namespace Grafika_Komputerowa1
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.MoveVertice;
             collection.RemoveSelection();
+            pictureBox1.Invalidate();
         }
 
         private void toolStripButton3_Click(object sender, EventArgs e)
@@ -353,6 +355,7 @@ namespace Grafika_Komputerowa1
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.MoveEdge;
             collection.RemoveSelection();
+            pictureBox1.Invalidate();
         }
 
         private void toolStripButton4_Click(object sender, EventArgs e)
@@ -362,6 +365,7 @@ namespace Grafika_Komputerowa1
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.MoveFigure;
             collection.RemoveSelection();
+            pictureBox1.Invalidate();
         }
 
         private void toolStripButton5_Click(object sender, EventArgs e)
@@ -370,6 +374,7 @@ namespace Grafika_Komputerowa1
             Check(sender);
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.AddRelation;
+            pictureBox1.Invalidate();
         }
 
         private void toolStripButton8_Click(object sender, EventArgs e)
@@ -378,6 +383,7 @@ namespace Grafika_Komputerowa1
             Check(sender);
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.RemoveRelation;
+            pictureBox1.Invalidate();
         }
 
         private void toolStripButton6_Click(object sender, EventArgs e)
@@ -387,6 +393,7 @@ namespace Grafika_Komputerowa1
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.AddPoint;
             collection.RemoveSelection();
+            pictureBox1.Invalidate();
         }
 
         private void toolStripButton7_Click(object sender, EventArgs e)
@@ -396,6 +403,7 @@ namespace Grafika_Komputerowa1
             collection.DeleteUnfinishedFigure();
             stripChoice = ToolStripChoice.RemovePoint;
             collection.RemoveSelection();
+            pictureBox1.Invalidate();
         }
 
         private void Check(object sender)
@@ -417,6 +425,10 @@ namespace Grafika_Komputerowa1
             }
         }
 
-       
+        private void newToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            collection.figures.Clear();
+            pictureBox1.Invalidate();
+        }
     }
 }
