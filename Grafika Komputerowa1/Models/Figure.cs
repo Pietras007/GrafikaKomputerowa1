@@ -1,6 +1,7 @@
 ﻿using Grafika_Komputerowa1.Constans;
 using Grafika_Komputerowa1.Extentions;
 using Grafika_Komputerowa1.Helpers;
+using Grafika_Komputerowa1.RelationLogic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,29 +63,65 @@ namespace Grafika_Komputerowa1.Models
             if (start != null && end != null)
             {
                 (Edge, Edge) e = GetEdgesFromPoint(start);
+                List<Vertice> oldVertices = points.Clone();
+                if (e.Item1 != null)
+                {
+                    e.Item1.End.x = end.x;
+                    e.Item1.End.y = end.y;
+                }
+                if (e.Item2 != null)
+                {
+                    e.Item2.Start.x = end.x;
+                    e.Item2.Start.y = end.y;
+                }
+                start.x = end.x;
+                start.y = end.y;
                 if (!KeepRelations(e.Item2.End))
                 {
+                    for (int i = 0; i < oldVertices.Count; i++)
+                    {
+                        points[i].x = oldVertices[i].x;
+                        points[i].y = oldVertices[i].y;
+                    }
+                    for (int i = oldVertices.Count - 1; i >= 0; i--)
+                    {
+                        oldVertices[i].Dispose();
+                    }
                     MoveFigure(end.x - start.x, end.y - start.y);
                     return false;
-                }
-                else
-                {
-                    if (e.Item1 != null)
-                    {
-                        e.Item1.End.x = end.x;
-                        e.Item1.End.y = end.y;
-                    }
-                    if (e.Item2 != null)
-                    {
-                        e.Item2.Start.x = end.x;
-                        e.Item2.Start.y = end.y;
-                    }
-                    start.x = end.x;
-                    start.y = end.y;
                 }
                 return true;
             }
             return false;
+
+
+
+            //if (start != null && end != null)
+            //{
+            //    (Edge, Edge) e = GetEdgesFromPoint(start);
+            //    if (!KeepRelations(e.Item2.End))
+            //    {
+            //        MoveFigure(end.x - start.x, end.y - start.y);
+            //        return false;
+            //    }
+            //    else
+            //    {
+            //        if (e.Item1 != null)
+            //        {
+            //            e.Item1.End.x = end.x;
+            //            e.Item1.End.y = end.y;
+            //        }
+            //        if (e.Item2 != null)
+            //        {
+            //            e.Item2.Start.x = end.x;
+            //            e.Item2.Start.y = end.y;
+            //        }
+            //        start.x = end.x;
+            //        start.y = end.y;
+            //    }
+            //    return true;
+            //}
+            //return false;
         }
         public bool RemovePoint(Vertice point)
         {
@@ -166,7 +203,6 @@ namespace Grafika_Komputerowa1.Models
         public bool KeepRelations(Vertice v)
         {
             List<Vertice> oldVertices = points.Clone();
-            
             int indexer = 0;
             int maxEdges = edges.Count * 2;
             Vertice startPoint = GetEdgesFromPoint(v).Item1.Start;
@@ -174,10 +210,9 @@ namespace Grafika_Komputerowa1.Models
             Vertice currentPoint = v;
             Vertice currentReversePoint = v;
             List<Edge> reversedEdgeList = KeepRelationsHelper.GetReversedEdgesList(edges);
-            while (true)
+            for (int zz = 0; zz < points.Count + 2; zz++)
             {
                 (Edge, Edge) edgesFromPoint = GetEdgesFromPoint(currentPoint);
-                (Edge, Edge) edgesReverseFromPoint = KeepRelationsHelper.GetEdgesFromPointListEdge(currentReversePoint, reversedEdgeList);
                 if (AllRelationsOk())
                 {
                     for (int i = oldVertices.Count - 1; i >= 0; i--)
@@ -186,6 +221,7 @@ namespace Grafika_Komputerowa1.Models
                     }
                     return true;
                 }
+
                 if (!currentPoint.Equals(startPoint))
                 {
                     Relation rel = GetRelationFromEdge(edgesFromPoint.Item1);
@@ -197,10 +233,25 @@ namespace Grafika_Komputerowa1.Models
                         }
                     }
                 }
+                currentPoint = edgesFromPoint.Item2.End;
+                indexer++;
 
+            }
+
+            for (int zz = 0; zz < points.Count + 2; zz++)
+            {
+                (Edge, Edge) edgesReverseFromPoint = KeepRelationsHelper.GetEdgesFromPointListEdge(currentReversePoint, reversedEdgeList);
+                if (AllRelationsOk())
+                {
+                    for (int i = oldVertices.Count - 1; i >= 0; i--)
+                    {
+                        oldVertices[i].Dispose();
+                    }
+                    return true;
+                }
                 if (!currentReversePoint.Equals(startPoint))
                 {
-                    Relation rel = KeepRelationsHelper.GetRelationFromEdgeListRelation(edgesFromPoint.Item1, ps);
+                    Relation rel = KeepRelationsHelper.GetRelationFromEdgeListRelation(edgesReverseFromPoint.Item1, ps);
                     if (rel != null)
                     {
                         if (!IsRelationOk(rel))
@@ -209,25 +260,75 @@ namespace Grafika_Komputerowa1.Models
                         }
                     }
                 }
-
-                if (indexer > maxEdges)
-                {
-                    for (int i = 0; i < oldVertices.Count; i++)
-                    {
-                        points[i].x = oldVertices[i].x;
-                        points[i].y = oldVertices[i].y;
-                    }
-                    for (int i = oldVertices.Count - 1; i >= 0; i--)
-                    {
-                        oldVertices[i].Dispose();
-                    }
-                    return false;
-                }
-
-                currentPoint = edgesFromPoint.Item2.End;
                 currentReversePoint = edgesReverseFromPoint.Item2.End;
-                indexer++;
             }
+
+            for (int i = 0; i < oldVertices.Count; i++)
+            {
+                points[i].x = oldVertices[i].x;
+                points[i].y = oldVertices[i].y;
+            }
+            for (int i = oldVertices.Count - 1; i >= 0; i--)
+            {
+                oldVertices[i].Dispose();
+            }
+            return false;
+
+            //while (true)
+            //{
+            //    (Edge, Edge) edgesFromPoint = GetEdgesFromPoint(currentPoint);
+            //    (Edge, Edge) edgesReverseFromPoint = KeepRelationsHelper.GetEdgesFromPointListEdge(currentReversePoint, reversedEdgeList);
+            //    if (AllRelationsOk())
+            //    {
+            //        for (int i = oldVertices.Count - 1; i >= 0; i--)
+            //        {
+            //            oldVertices[i].Dispose();
+            //        }
+            //        return true;
+            //    }
+            //    if (!currentPoint.Equals(startPoint))
+            //    {
+            //        Relation rel = GetRelationFromEdge(edgesFromPoint.Item1);
+            //        if (rel != null)
+            //        {
+            //            if (!IsRelationOk(rel))
+            //            {
+            //                RelationLogic.RelationLogic.RepairRelation(rel, edgesFromPoint, currentPoint);
+            //            }
+            //        }
+            //    }
+
+            //    if (!currentReversePoint.Equals(startPoint))
+            //    {
+            //        Relation rel = KeepRelationsHelper.GetRelationFromEdgeListRelation(edgesFromPoint.Item1, ps);
+            //        if (rel != null)
+            //        {
+            //            if (!IsRelationOk(rel))
+            //            {
+            //                RelationLogic.RelationLogic.RepairRelation(rel, edgesReverseFromPoint, currentReversePoint);
+            //            }
+            //        }
+            //    }
+
+            //    if (indexer > maxEdges)
+            //    {
+            //        for (int i = 0; i < oldVertices.Count; i++)
+            //        {
+            //            points[i].x = oldVertices[i].x;
+            //            points[i].y = oldVertices[i].y;
+            //        }
+            //        for (int i = oldVertices.Count - 1; i >= 0; i--)
+            //        {
+            //            oldVertices[i].Dispose();
+            //        }
+            //        return false;
+            //    }
+
+            //    currentPoint = edgesFromPoint.Item2.End;
+            //    currentReversePoint = edgesReverseFromPoint.Item2.End;
+            //    indexer++;
+            //}
+
         }
 
         public Relation GetWrongRelation()
@@ -318,7 +419,7 @@ namespace Grafika_Komputerowa1.Models
             double a1 = (double)(e1.End.y - e1.Start.y) / (e1.End.x - e1.Start.x);
             double a2 = (double)(e2.End.y - e2.Start.y) / (e2.End.x - e2.Start.x);
             int multiplication100 = (int)(a1 * a2 * 100 * -1);
-            if (multiplication100 >= 90 && multiplication100 <= 101)
+            if (Math.Abs(multiplication100 - 100) < CONST.differenceToMakeEdgesPerpendicular)
             {
                 return true;
             }

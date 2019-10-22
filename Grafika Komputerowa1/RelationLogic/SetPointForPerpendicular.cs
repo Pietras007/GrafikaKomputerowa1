@@ -22,6 +22,10 @@ namespace Grafika_Komputerowa1.RelationLogic
             {
                 vertices = (new Vertice(start.x, start.y - (int)d), new Vertice(start.x, start.y + (int)d));
             }
+            else if (line.Item1 > int.MaxValue - 100 || line.Item1 < int.MinValue + 100)
+            {
+                vertices = (new Vertice(start.x - (int)d, start.y), new Vertice(start.x + (int)d, start.y));
+            }
             else
             {
                 (double, double) perpendicularLine = Line.GetPerpendicularThroughPoint(line, start);
@@ -41,7 +45,7 @@ namespace Grafika_Komputerowa1.RelationLogic
             (double, double) line = Line.GetStraightLine(siblingEdge.Start, siblingEdge.End);
             (double, double) distanceLine = Line.GetStraightLine(start, end);
             (Vertice, Vertice) vertices = (null, null);
-            if (line.Item1 != 0)
+            if (line.Item1 != 0 && line.Item1 < int.MaxValue - 100 && line.Item1 > int.MinValue + 100)
             {
                 (double, double) perpendicularLine = Line.GetPerpendicularThroughPoint(line, start);
                 if (d2 < Line.DistanceVerticeFromLine(perpendicularLine, end))
@@ -70,23 +74,32 @@ namespace Grafika_Komputerowa1.RelationLogic
 
         public static void SetPerpednicularNextPerpendicular(Edge siblingEdge, Edge currentEdge, Edge nextEdge)
         {
-            Vertice start = currentEdge.Start;
-            Vertice middle = currentEdge.End;
-            Vertice end = nextEdge.End;
-            Vertice resultVertice = null;
-            (double, double) line = Line.GetStraightLine(siblingEdge.Start, siblingEdge.End);
-            if (line.Item1 == 0)
-            {
-                int diff = end.y - start.y;
-                resultVertice = new Vertice(start.x, start.y + diff);
-            }
-            else
-            {
-                (double, double) perpendicularLine = Line.GetPerpendicularThroughPoint(line, start);
-                (double, double) nextLine = Line.GetStraightLine(middle, end);
-                resultVertice = Line.IntersectionOfLines(perpendicularLine, nextLine);
-            }
-            PointHelpers.SetPointXY(middle, resultVertice.x, resultVertice.y);
+            //Vertice start = currentEdge.Start;
+            //Vertice middle = currentEdge.End;
+            //Vertice end = nextEdge.End;
+            //Vertice resultVertice = null;
+            //(double, double) line = Line.GetStraightLine(siblingEdge.Start, siblingEdge.End);
+            //(double, double) nextLine = Line.GetStraightLine(middle, end);
+            //if (line.Item1 == 0)
+            //{
+            //    //int diff = end.y - start.y;
+            //    //resultVertice = new Vertice(start.x, start.y + diff);
+            //    int myY = (int)(nextLine.Item1 * start.x + nextLine.Item2);
+            //    resultVertice = new Vertice(start.x, myY);
+            //}
+            //else if(line.Item1 > int.MaxValue - 100 || line.Item1 < int.MinValue + 100)
+            //{
+            //    //int diff = end.x - start.x;
+            //    //resultVertice = new Vertice(start.x + diff, start.y);
+            //    int myX = (int)((start.y - nextLine.Item2)/nextLine.Item1);
+            //    resultVertice = new Vertice(myX, start.y);
+            //}
+            //else
+            //{
+            //    (double, double) perpendicularLine = Line.GetPerpendicularThroughPoint(line, start);
+            //    resultVertice = Line.IntersectionOfLines(perpendicularLine, nextLine);
+            //}
+            //PointHelpers.SetPointXY(middle, resultVertice.x, resultVertice.y);
         }
     }
 }

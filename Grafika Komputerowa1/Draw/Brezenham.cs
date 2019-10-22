@@ -35,6 +35,7 @@ namespace Grafika_Komputerowa1.Draw
                 g.MidpointLineS_SE(brush, start.x, start.y, end.x, end.y);
                 g.MidpointLineS_SE(brush, end.x, end.y, start.x, start.y);
             }
+
         }
 
         static void MidpointLineN_NE(this Graphics g, Brush brush, int x1, int y1, int x2, int y2)

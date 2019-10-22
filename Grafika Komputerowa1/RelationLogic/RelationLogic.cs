@@ -24,6 +24,10 @@ namespace Grafika_Komputerowa1.RelationLogic
 
             if (currentRelation == RelationEnum.Equal)
             {
+                //Vertice midPoint = currentEdge.End;
+                //Vertice ver = Equality.CalculateVertice(currentEdge.Start, currentEdge.End, siblingEdge);
+                //midPoint.x = ver.x;
+                //midPoint.y = ver.y;
                 if (nextEdge.relation == RelationEnum.None)
                 {
                     if (DistanceHelpers.GetEdgeLength(siblingEdge) < DistanceHelpers.DistanceBetween(currentEdge.Start, nextEdge.End) - 20)
@@ -67,17 +71,14 @@ namespace Grafika_Komputerowa1.RelationLogic
             }
             else if (currentRelation == RelationEnum.Perpendicular)
             {
-                //if(nextEdge.relation == RelationEnum.Perpendicular)
-                //{
-
-                //}
-                //else
+                //if (nextEdge.relation != RelationEnum.Perpendicular)
                 //{
                 //    Vertice midPoint = currentEdge.End;
                 //    Vertice ver = Perpendicularity.CalculateVertice(currentEdge.Start, currentEdge.End, siblingEdge);
                 //    midPoint.x = ver.x;
                 //    midPoint.y = ver.y;
                 //}
+
                 if (nextEdge.relation == RelationEnum.None)
                 {
                     SetPointForPerpendicular.SetPerpednicular(siblingEdge, currentEdge, nextEdge);
