@@ -88,14 +88,16 @@
             // sampleFigureToolStripMenuItem
             // 
             this.sampleFigureToolStripMenuItem.Name = "sampleFigureToolStripMenuItem";
-            this.sampleFigureToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.sampleFigureToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sampleFigureToolStripMenuItem.Text = "Sample figure";
+            this.sampleFigureToolStripMenuItem.Click += new System.EventHandler(this.sampleFigureToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // pictureBox1
             // 

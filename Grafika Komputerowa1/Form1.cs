@@ -38,6 +38,7 @@ namespace Grafika_Komputerowa1
         private void Form1_Load(object sender, EventArgs e)
         {
             pictureBOX = pictureBox1;
+            SampleFigure();
         }
 
         private void pictureBox1_Click(object sender, EventArgs eventargs)
@@ -428,6 +429,86 @@ namespace Grafika_Komputerowa1
         private void newToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             collection.figures.Clear();
+            pictureBox1.Invalidate();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void sampleFigureToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SampleFigure();
+        }
+
+        private void SampleFigure()
+        {
+            collection.figures.Clear();
+            pictureBox1.Invalidate();
+            Figure figure = new Figure();
+            figure.isFull = true;
+            Vertice v1 = new Vertice(324, 265);
+            Vertice v2 = new Vertice(476, 320);
+            Vertice v3 = new Vertice(570, 145);
+            Vertice v4 = new Vertice(740, 460);
+            Vertice v5 = new Vertice(900, 300);
+            Vertice v6 = new Vertice(1190, 600);
+            Vertice v7 = new Vertice(950, 430);
+            Vertice v8 = new Vertice(650, 530);
+            Vertice v9 = new Vertice(250, 630);
+            List<Vertice> vertices = new List<Vertice>();
+            vertices.Add(v1);
+            vertices.Add(v2);
+            vertices.Add(v3);
+            vertices.Add(v4);
+            vertices.Add(v5);
+            vertices.Add(v6);
+            vertices.Add(v7);
+            vertices.Add(v8);
+            vertices.Add(v9);
+
+            Edge e1 = new Edge(v1, v2);
+            e1.relation = RelationEnum.Perpendicular;
+            e1.relationNumber = 1;
+            Edge e2 = new Edge(v2, v3);
+            Edge e3 = new Edge(v3, v4);
+            e3.relation = RelationEnum.Perpendicular;
+            e3.relationNumber = 1;
+            Edge e4 = new Edge(v4, v5);
+            Edge e5 = new Edge(v5, v6);
+            e5.relation = RelationEnum.Equal;
+            e5.relationNumber = 2;
+            Edge e6 = new Edge(v6, v7);
+            Edge e7 = new Edge(v7, v8);
+            e7.relation = RelationEnum.Equal;
+            e7.relationNumber = 2;
+            Edge e8 = new Edge(v8, v9);
+            Edge e9 = new Edge(v9, v1);
+            List<Edge> edges = new List<Edge>();
+            edges.Add(e1);
+            edges.Add(e2);
+            edges.Add(e3);
+            edges.Add(e4);
+            edges.Add(e5);
+            edges.Add(e6);
+            edges.Add(e7);
+            edges.Add(e8);
+            edges.Add(e9);
+
+            Relation r1 = new Relation(e1, e3, RelationEnum.Perpendicular);
+            Relation r2 = new Relation(e5, e7, RelationEnum.Equal);
+            List<Relation> relations = new List<Relation>();
+            relations.Add(r1);
+            relations.Add(r2);
+
+            figure.edges = edges;
+            figure.points = vertices;
+            figure.ps = relations;
+            figure.relationNumber = 2;
+
+            collection.figures.Add(figure);
+            figure.KeepRelations(v1);
             pictureBox1.Invalidate();
         }
     }
