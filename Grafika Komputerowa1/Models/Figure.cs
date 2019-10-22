@@ -273,62 +273,6 @@ namespace Grafika_Komputerowa1.Models
                 oldVertices[i].Dispose();
             }
             return false;
-
-            //while (true)
-            //{
-            //    (Edge, Edge) edgesFromPoint = GetEdgesFromPoint(currentPoint);
-            //    (Edge, Edge) edgesReverseFromPoint = KeepRelationsHelper.GetEdgesFromPointListEdge(currentReversePoint, reversedEdgeList);
-            //    if (AllRelationsOk())
-            //    {
-            //        for (int i = oldVertices.Count - 1; i >= 0; i--)
-            //        {
-            //            oldVertices[i].Dispose();
-            //        }
-            //        return true;
-            //    }
-            //    if (!currentPoint.Equals(startPoint))
-            //    {
-            //        Relation rel = GetRelationFromEdge(edgesFromPoint.Item1);
-            //        if (rel != null)
-            //        {
-            //            if (!IsRelationOk(rel))
-            //            {
-            //                RelationLogic.RelationLogic.RepairRelation(rel, edgesFromPoint, currentPoint);
-            //            }
-            //        }
-            //    }
-
-            //    if (!currentReversePoint.Equals(startPoint))
-            //    {
-            //        Relation rel = KeepRelationsHelper.GetRelationFromEdgeListRelation(edgesFromPoint.Item1, ps);
-            //        if (rel != null)
-            //        {
-            //            if (!IsRelationOk(rel))
-            //            {
-            //                RelationLogic.RelationLogic.RepairRelation(rel, edgesReverseFromPoint, currentReversePoint);
-            //            }
-            //        }
-            //    }
-
-            //    if (indexer > maxEdges)
-            //    {
-            //        for (int i = 0; i < oldVertices.Count; i++)
-            //        {
-            //            points[i].x = oldVertices[i].x;
-            //            points[i].y = oldVertices[i].y;
-            //        }
-            //        for (int i = oldVertices.Count - 1; i >= 0; i--)
-            //        {
-            //            oldVertices[i].Dispose();
-            //        }
-            //        return false;
-            //    }
-
-            //    currentPoint = edgesFromPoint.Item2.End;
-            //    currentReversePoint = edgesReverseFromPoint.Item2.End;
-            //    indexer++;
-            //}
-
         }
 
         public Relation GetWrongRelation()

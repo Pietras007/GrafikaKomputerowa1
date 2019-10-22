@@ -67,20 +67,6 @@ namespace Grafika_Komputerowa1.RelationLogic
             }
             PointHelpers.SetPointXY(middle, resultVertice.x, resultVertice.y);
         }
-
-        //public static void ShortenLineForEdge(double d, Edge currentEdge, Edge nextEdge)
-        //{
-        //    Vertice start = currentEdge.Start;
-        //    Vertice middle = currentEdge.End;
-        //    Vertice end = nextEdge.End;
-        //    (double, double) lineHelp = Line.GetStraightLine(middle, end);
-        //    Vertice resultVertice = PointHelpers.GetPointInProportion(1 / 2, middle, end);
-        //    (double, double) line = Line.GetStraightLine(start, resultVertice);
-        //    (Vertice, Vertice) midVertices = PointHelpers.GetPointFromLineDistanceAndPoint(line, d, currentEdge.Start);
-        //    Vertice midVertice = DistanceHelpers.GetCloserVerticeFromLine(lineHelp, midVertices);
-        //    PointHelpers.SetPointXY(middle, midVertice.x, midVertice.y);
-        //}
-
         public static void ShortenLineForEdge(double d, Edge currentEdge, Edge nextEdge)
         {
             Vertice start = currentEdge.Start;
