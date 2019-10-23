@@ -1,0 +1,40 @@
+Aplikacja sluzaca do modelowania figur i dodawania relacji na ich krawedziach.
+
+Po uruchomieniu sie aplikacji pojawia sie przykladowa figura z relacjami.
+Uzytkownik ma mozliwosc zmian obecnej figury, dorysowywania nowych figur, ale moze równiez zaczac od zera poprzez
+nacisniecie File -> New.
+Istnieje mozliwosc ponownego uruchomienia przykladowej figury: File -> SampleFigure.
+
+Uzytkownik moze rysowac wlasne figury: opcja Draw Figure.
+Naciskajac LPM rysuje sie kolejne wierzcholki. Figura jest gotowa tylko w przypadku kiedy klikniemy na poczatkowy wierzcholek powtórnie.
+Po uprzednim nacisnieciu przycisku na pasku menu uzytkownik ma wiele mozliwosci edycji figur:
+-dodawanie relacji (równosc i prostopadlosc)
+-przesuwanie wierzcholków
+-przesuwanie krawedzi
+-przesuwanie figury
+-dodawanie wierzcholków w polowie krawedzi
+-usuwanie wierzcholków
+-usuwanie relacji
+-usuwanie calych figur
+
+Jak przesunac?
+Najpierw kliknac odpowiedni przycisk.
+Nastepnie najechac na element który chcemy przesunac, wcisnac LPM i nie puszczajac przesuwac element w zadane miejsce.
+Nastepnie nalezy puscic LPM.
+W przypadku kiedy algorytm przesuwania nie pozwala na przesuniecie zadanego elementu przesunieciu ulegnie cala figura.
+
+Jak dodac relacje?
+Nacisnac odpowiendi przycisk.
+Kliknac na pierwsza krawedz(zmieni kolor).
+Kliknac na druga krawedz i wybrac odpowiednia relacje.
+Uwaga! Nie mozna dodawac wiecej niz jedna relacje na jedna krawedz.
+W przypadku kiedy algorytm nie bedzie w stanie ustawic poprawnie relacji, wyswietlony zostanie odpowiedni komunikat.
+
+Jak dodac wierzcholek?
+Wybrac przycisk Add Point.
+Kliknac na krawedz na której wierzcholek ma sie pojawic.
+
+Jak usunac element?
+Nacisnac odpowiendi przycisk.
+Nacisnac na zadany obiekt do usuniecia.
+

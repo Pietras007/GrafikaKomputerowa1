@@ -25,4 +25,12 @@ namespace Grafika_Komputerowa1.Constans
         AddPoint,
         RemovePoint
     }
+
+    public enum StylePainting
+    {
+        Brezenham,
+        DrawLine,
+        WU,
+        Symmetric
+    }
 }

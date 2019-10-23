@@ -51,6 +51,7 @@
     <Compile Include="Draw\Brezenham.cs" />
     <Compile Include="Draw\EqualIcon.cs" />
     <Compile Include="Draw\PerpendicularIcon.cs" />
+    <Compile Include="Draw\WU.cs" />
     <Compile Include="Extentions\CloneListExtention.cs" />
     <Compile Include="Extentions\MouseEventArgsExtentions.cs" />
     <Compile Include="Form1.cs">

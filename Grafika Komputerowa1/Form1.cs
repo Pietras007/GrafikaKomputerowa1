@@ -17,6 +17,7 @@ namespace Grafika_Komputerowa1
     public partial class Form1 : Form
     {
         public ToolStripChoice stripChoice;
+        public StylePainting stylePainting;
         public CollectionFigure collection;
         public Vertice clickedPoint;
         public Edge clickedEdge;
@@ -26,10 +27,12 @@ namespace Grafika_Komputerowa1
         public bool isMoving;
         public static PictureBox pictureBOX;
         List<object> checkedList = new List<object>();
+        List<object> checkedListStylePainting = new List<object>();
 
         public Form1()
         {
             stripChoice = ToolStripChoice.DrawFigure;
+            stylePainting = StylePainting.Brezenham;
             collection = new CollectionFigure();
             isMoving = false;
             InitializeComponent();
@@ -295,12 +298,12 @@ namespace Grafika_Komputerowa1
                                 if (edge.isSelected)
                                 {
                                     //g.BrezenhamAlgorithm(edge.Start, edge.End, orangeBrush);
-                                    g.BrezenhamAlgorithm(edge.Start, edge.End, orangePen, orangeBrush);
+                                    g.BrezenhamAlgorithm(edge.Start, edge.End, orangePen, orangeBrush, stylePainting);
                                 }
                                 else
                                 {
                                     //g.BrezenhamAlgorithm(edge.Start, edge.End, blackBrush);
-                                    g.BrezenhamAlgorithm(edge.Start, edge.End, blackPen, blackBrush);
+                                    g.BrezenhamAlgorithm(edge.Start, edge.End, blackPen, blackBrush, stylePainting);
                                 }
                             }
 
@@ -541,6 +544,55 @@ namespace Grafika_Komputerowa1
             pictureBox1.Invalidate();
         }
 
-       
+        private void toolStripButton10_Click(object sender, EventArgs e)
+        {
+            UnCheckAllStylePainting();
+            CheckStylePainting(sender);
+            stylePainting = StylePainting.Brezenham;
+            pictureBox1.Invalidate();
+        }
+
+        private void toolStripButton11_Click(object sender, EventArgs e)
+        {
+            UnCheckAllStylePainting();
+            CheckStylePainting(sender);
+            stylePainting = StylePainting.DrawLine;
+            pictureBox1.Invalidate();
+        }
+
+        private void toolStripButton12_Click(object sender, EventArgs e)
+        {
+            UnCheckAllStylePainting();
+            CheckStylePainting(sender);
+            stylePainting = StylePainting.WU;
+            pictureBox1.Invalidate();
+        }
+
+        private void toolStripButton13_Click(object sender, EventArgs e)
+        {
+            UnCheckAllStylePainting();
+            CheckStylePainting(sender);
+            stylePainting = StylePainting.Symmetric;
+            pictureBox1.Invalidate();
+        }
+
+        private void CheckStylePainting(object sender)
+        {
+            if (!checkedListStylePainting.Contains(sender))
+            {
+                checkedListStylePainting.Add(sender);
+            }
+            ToolStripButton butt = (ToolStripButton)sender;
+            butt.Checked = true;
+        }
+
+        private void UnCheckAllStylePainting()
+        {
+            foreach (var sender in checkedListStylePainting)
+            {
+                ToolStripButton butt = (ToolStripButton)sender;
+                butt.Checked = false;
+            }
+        }
     }
 }
